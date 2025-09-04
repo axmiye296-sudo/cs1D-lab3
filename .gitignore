@@ -1,0 +1,81 @@
+# Build artifacts
+build/
+a.out
+a.out.dSYM/
+
+# Compiled object files
+*.o
+*.obj
+
+# Executable files
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.dSYM
+*.su
+*.idb
+*.pdb
+
+# IDE and editor files
+.vscode/
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# CMake (if you switch later)
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Core dumps
+core
+core.*
+
+# Profiling data
+*.prof
+*.gcda
+*.gcno
+*.gcov
+
+# Valgrind output
+*.memcheck
+*.helgrind
+*.drd
+*.massif
+*.callgrind
+
+# Static analysis
+*.sarif
