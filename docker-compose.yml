@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cs1d_lab3_db
+    environment:
+      POSTGRES_DB: cs1d_lab3
+      POSTGRES_USER: cs1d_user
+      POSTGRES_PASSWORD: cs1d_password
+    ports:
+      - "5434:5432"  # Use port 5434
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
