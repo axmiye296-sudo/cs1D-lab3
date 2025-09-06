@@ -78,4 +78,8 @@ core.*
 *.callgrind
 
 # Static analysis
+<<<<<<< HEAD
 *.sarif
+=======
+*.sarif
+>>>>>>> branch_rita
