@@ -1,3 +1,4 @@
+# docker-compose.yml
 services:
   postgres:
     image: postgres:15-alpine
@@ -7,11 +8,27 @@ services:
       POSTGRES_USER: cs1d_user
       POSTGRES_PASSWORD: cs1d_password
     ports:
-      - "5434:5432"  # Use port 5434
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init:/docker-entrypoint-initdb.d
     restart: unless-stopped
+
+  app:
+    build: .
+    container_name: cs1d_lab3_app
+    platform: linux/arm64
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=cs1d_lab3
+      - DB_USER=cs1d_user
+      - DB_PASSWORD=cs1d_password
+    volumes:
+      - .:/app
+    command: ./build/main
 
 volumes:
   postgres_data:
