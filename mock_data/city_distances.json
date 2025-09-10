@@ -1,0 +1,17 @@
+[
+  {
+    "from_city_id": "1",
+    "to_city_id": "2",
+    "distance": "2445.5"
+  },
+  {
+    "from_city_id": "1",
+    "to_city_id": "3",
+    "distance": "789.2"
+  },
+  {
+    "from_city_id": "2",
+    "to_city_id": "3",
+    "distance": "1756.3"
+  }
+]

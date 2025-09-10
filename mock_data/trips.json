@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "start_city_id": "1",
+    "trip_type": "business",
+    "total_distance": "3234.7"
+  },
+  {
+    "id": "2",
+    "start_city_id": "2",
+    "trip_type": "leisure",
+    "total_distance": "1756.3"
+  },
+  {
+    "id": "3",
+    "start_city_id": "3",
+    "trip_type": "business",
+    "total_distance": "789.2"
+  }
+]
