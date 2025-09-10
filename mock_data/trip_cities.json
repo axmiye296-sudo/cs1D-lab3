@@ -1,0 +1,26 @@
+[
+  {
+    "city_id": "1",
+    "id": "1",
+    "trip_id": "1",
+    "visit_order": "1"
+  },
+  {
+    "city_id": "3",
+    "id": "2",
+    "trip_id": "1",
+    "visit_order": "2"
+  },
+  {
+    "city_id": "2",
+    "id": "3",
+    "trip_id": "2",
+    "visit_order": "1"
+  },
+  {
+    "city_id": "3",
+    "id": "5",
+    "trip_id": "2",
+    "visit_order": "2"
+  }
+]
