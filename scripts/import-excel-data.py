@@ -10,9 +10,9 @@ import os
 
 DB_CONFIG = {
     'host': 'localhost',
-    'port': '5434',
-    'database': 'cs1d_lab3',
-    'user': 'cs1d_user',
+    'port': '5432',
+    'database': 'postgres',
+    'user': 'x',
     'password': 'cs1d_password'
 }
 
