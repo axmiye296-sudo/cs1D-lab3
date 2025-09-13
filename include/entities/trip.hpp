@@ -22,6 +22,12 @@ public:
     int getTripType() const;
     int getTotalDistance() const;
 
+    // Setters
+    void setId(int id);
+    void setStartCityId(int start_city_id);
+    void setTripType(std::string trip_type);
+    void setTotalDistance(int total_distance);
+
     // Validation
     bool isValid() const;
 
