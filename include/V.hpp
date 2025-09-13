@@ -7,6 +7,7 @@
 #include <new>
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 template<typename T>
 class V {

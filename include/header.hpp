@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include "V.hpp"
+#include <memory>
+#include <vector>
 
 
 #endif
