@@ -2,7 +2,7 @@
  * @file tripCities.cpp
  * @brief Implementation of TripCity entity class
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains the implementation of the TripCity entity class,
  * which represents the relationship between trips and cities with visit order.

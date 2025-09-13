@@ -2,7 +2,7 @@
  * @file tripCityRepository.cpp
  * @brief Implementation of TripCityRepository class for database operations
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains the data access layer implementation for managing
  * trip-city relationships in the SQLite database. It handles all CRUD
