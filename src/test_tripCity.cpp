@@ -1,3 +1,14 @@
+/**
+ * @file test_tripCity.cpp
+ * @brief Test suite for TripCity functionality and database operations
+ * @author CS1D Lab 3 Team
+ * @date 2024
+ * 
+ * This file contains comprehensive tests for the TripCity functionality,
+ * including database connectivity, data validation, and CRUD operations.
+ * It serves as both a testing tool and a demonstration of the system's capabilities.
+ */
+
 #include "../include/header.hpp"
 #include "../include/databaseManager.hpp"
 #include "../include/entities/tripCities.hpp"
@@ -5,11 +16,25 @@
 #include <vector>
 #include <iomanip>
 
+/**
+ * @class TripCityTester
+ * @brief Test class for TripCity functionality
+ * 
+ * This class provides comprehensive testing capabilities for the TripCity
+ * system, including database connectivity tests, data validation, and
+ * CRUD operation testing.
+ */
 class TripCityTester {
 private:
-    DatabaseManager& db;
+    DatabaseManager& db; ///< Reference to database manager
 
 public:
+    /**
+     * @brief Constructor for TripCityTester
+     * 
+     * Initializes the tester with a database connection.
+     * Exits the application if database connection fails.
+     */
     TripCityTester() : db(DatabaseManager::getInstance()) {
         if (!db.connect()) {
             std::cerr << "Failed to connect to database!" << std::endl;
@@ -17,6 +42,17 @@ public:
         }
     }
 
+    /**
+     * @brief Runs the complete test suite
+     * 
+     * Executes all test cases in sequence:
+     * 1. Database connection test
+     * 2. Cities data validation
+     * 3. Trips data validation
+     * 4. TripCity operations testing
+     * 
+     * Displays results in a formatted output with success/failure indicators.
+     */
     void runAllTests() {
         std::cout << "\n" << std::string(60, '=') << std::endl;
         std::cout << "    TRIP CITY FUNCTIONS TEST SUITE" << std::endl;
@@ -33,6 +69,12 @@ public:
     }
 
 private:
+    /**
+     * @brief Tests database connectivity
+     * 
+     * Verifies that the database connection is established and functional.
+     * This is a prerequisite for all other tests.
+     */
     void testDatabaseConnection() {
         std::cout << "\n1. Testing Database Connection..." << std::endl;
         std::cout << std::string(40, '-') << std::endl;
@@ -44,6 +86,12 @@ private:
         }
     }
 
+    /**
+     * @brief Tests cities data availability and displays sample data
+     * 
+     * Queries the cities table to verify data exists and displays
+     * a sample of available cities for verification.
+     */
     void testCitiesData() {
         std::cout << "\n2. Testing Cities Data..." << std::endl;
         std::cout << std::string(40, '-') << std::endl;
@@ -65,6 +113,12 @@ private:
         }
     }
 
+    /**
+     * @brief Displays a sample of cities from the database
+     * 
+     * Shows the first 10 cities in a formatted table for verification.
+     * This helps ensure the data import was successful.
+     */
     void displayCities() {
         std::string query = "SELECT id, name FROM cities ORDER BY name LIMIT 10;";
         auto result = db.executeSelect(query);
@@ -84,6 +138,12 @@ private:
         }
     }
 
+    /**
+     * @brief Tests trips data availability and creates test data if needed
+     * 
+     * Verifies that trips exist in the database. If no trips are found,
+     * creates a test trip for testing purposes.
+     */
     void testTripsData() {
         std::cout << "\n3. Testing Trips Data..." << std::endl;
         std::cout << std::string(40, '-') << std::endl;
@@ -106,6 +166,12 @@ private:
         }
     }
 
+    /**
+     * @brief Creates a test trip for testing purposes
+     * 
+     * Inserts a basic test trip into the database if no trips exist.
+     * This ensures there's data available for testing TripCity operations.
+     */
     void createTestTrip() {
         std::string query = "INSERT INTO trips (start_city_id, trip_type, total_distance) VALUES (NULL, 'test', 0.0);";
         if (db.executeQuery(query)) {
@@ -115,6 +181,11 @@ private:
         }
     }
 
+    /**
+     * @brief Displays sample trips from the database
+     * 
+     * Shows the first 5 trips in a formatted table for verification.
+     */
     void displayTrips() {
         std::string query = "SELECT id, trip_type, total_distance FROM trips ORDER BY id LIMIT 5;";
         auto result = db.executeSelect(query);
@@ -135,6 +206,16 @@ private:
         }
     }
 
+    /**
+     * @brief Tests TripCity CRUD operations
+     * 
+     * Performs comprehensive testing of TripCity operations:
+     * - Adding cities to trips
+     * - Retrieving cities from trips
+     * - Removing cities from trips
+     * 
+     * Uses the first available trip for testing.
+     */
     void testTripCityOperations() {
         std::cout << "\n4. Testing TripCity Operations..." << std::endl;
         std::cout << std::string(40, '-') << std::endl;
@@ -158,6 +239,10 @@ private:
         testRemoveCityFromTrip(tripId);
     }
 
+    /**
+     * @brief Gets the first available trip ID for testing
+     * @return int The first trip ID, or -1 if no trips exist
+     */
     int getFirstTripId() {
         std::string query = "SELECT id FROM trips ORDER BY id LIMIT 1;";
         auto result = db.executeSelect(query);
@@ -168,6 +253,13 @@ private:
         return -1;
     }
 
+    /**
+     * @brief Tests adding a city to a trip
+     * @param tripId The ID of the trip to add a city to
+     * 
+     * Adds the first available city to the specified trip and verifies
+     * the operation was successful.
+     */
     void testAddCityToTrip(int tripId) {
         std::cout << "\n🔧 Testing Add City to Trip..." << std::endl;
         
@@ -192,6 +284,13 @@ private:
         }
     }
 
+    /**
+     * @brief Tests retrieving cities from a trip
+     * @param tripId The ID of the trip to retrieve cities from
+     * 
+     * Queries and displays all cities associated with the specified trip,
+     * including city names and visit orders.
+     */
     void testGetCitiesForTrip(int tripId) {
         std::cout << "\n🔧 Testing Get Cities for Trip..." << std::endl;
         
@@ -229,6 +328,13 @@ private:
         }
     }
 
+    /**
+     * @brief Tests removing a city from a trip
+     * @param tripId The ID of the trip to remove a city from
+     * 
+     * Removes the first city found in the specified trip and verifies
+     * the operation was successful.
+     */
     void testRemoveCityFromTrip(int tripId) {
         std::cout << "\n🔧 Testing Remove City from Trip..." << std::endl;
         
@@ -254,6 +360,13 @@ private:
     }
 };
 
+/**
+ * @brief Main function for running the test suite
+ * @return int Exit status code (0 for success, 1 for failure)
+ * 
+ * Creates a TripCityTester instance and runs all tests.
+ * Handles exceptions and provides appropriate error reporting.
+ */
 int main() {
     try {
         TripCityTester tester;
