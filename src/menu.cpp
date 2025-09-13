@@ -2,7 +2,7 @@
  * @file menu.cpp
  * @brief User interface functions for the Trip Planning Application
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains the user interface functions that handle menu
  * display and user input processing for the trip planning application.

@@ -2,7 +2,7 @@
  * @file test_tripCity.cpp
  * @brief Test suite for TripCity functionality and database operations
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains comprehensive tests for the TripCity functionality,
  * including database connectivity, data validation, and CRUD operations.

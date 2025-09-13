@@ -2,7 +2,7 @@
  * @file tripCityService.cpp
  * @brief Implementation of TripCityService class for managing trip-city relationships
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains the business logic implementation for managing the relationship
  * between trips and cities, including adding, removing, and updating cities in trips.

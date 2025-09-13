@@ -2,7 +2,7 @@
  * @file main.cpp
  * @brief Main entry point for the CS1D Lab 3 Trip Planning Application
  * @author CS1D Lab 3 Team
- * @date 2024
+ * @date 2025
  * 
  * This file contains the main function that serves as the entry point
  * for the trip planning application. It initializes the application
