@@ -5,6 +5,9 @@
 #include "V.hpp"
 #include <memory>
 #include <vector>
+#include <iomanip>
 
+void displayMainMenu();
+int handleMenuChoice();
 
 #endif

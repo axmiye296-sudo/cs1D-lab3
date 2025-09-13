@@ -1,26 +1,21 @@
 #!/usr/bin/env python3
 """
-Import data from Excel file
+Import data from Excel file to SQLite database
 """
 
 import pandas as pd
-import psycopg2
+import sqlite3
 import sys
 import os
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'port': '5434',
-    'database': 'cs1d_lab3',
-    'user': 'cs1d_user',
-    'password': 'cs1d_password'
-}
+# SQLite database file path
+DB_FILE = 'database/cs1d_lab3.db'
 
 def import_from_excel(excel_file):
-    """Import all data from Excel file"""
+    """Import all data from Excel file to SQLite"""
     try:
-        # Connect to database
-        conn = psycopg2.connect(**DB_CONFIG)
+        # Connect to SQLite database
+        conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         
         # Read Excel file
@@ -28,7 +23,7 @@ def import_from_excel(excel_file):
         print(f"📋 Available sheets: {xls.sheet_names}")
 
         # --- Import Cities from 'Distances' and 'New Cities' sheets ---
-        print("️  Importing cities...")
+        print("��️  Importing cities...")
         all_cities = set()
         if 'Distances' in xls.sheet_names:
             df_distances = pd.read_excel(xls, sheet_name='Distances')
@@ -41,12 +36,12 @@ def import_from_excel(excel_file):
 
         for city_name in sorted(list(all_cities)):
             if pd.notna(city_name):
-                cursor.execute("INSERT INTO cities (name) VALUES (%s) ON CONFLICT (name) DO NOTHING;", (str(city_name),))
+                cursor.execute("INSERT OR IGNORE INTO cities (name) VALUES (?);", (str(city_name),))
         conn.commit()
         print(f"✅ Imported {len(all_cities)} unique cities.")
 
         # --- Import Foods from 'Foods' sheet ---
-        print(" Importing foods...")
+        print("�� Importing foods...")
         if 'Foods' in xls.sheet_names:
             df_foods = pd.read_excel(xls, sheet_name='Foods')
             # Clean up the 'Foods' DataFrame
@@ -63,12 +58,12 @@ def import_from_excel(excel_file):
                 
                 if pd.notna(city_name) and pd.notna(food_name) and pd.notna(price):
                     # Get city_id
-                    cursor.execute("SELECT id FROM cities WHERE name = %s;", (str(city_name),))
+                    cursor.execute("SELECT id FROM cities WHERE name = ?;", (str(city_name),))
                     city_id = cursor.fetchone()
                     if city_id:
                         city_id = city_id[0]
                         cursor.execute(
-                            "INSERT INTO foods (name, city_id, price) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING;",
+                            "INSERT OR IGNORE INTO foods (name, city_id, price) VALUES (?, ?, ?);",
                             (str(food_name), city_id, float(price))
                         )
                         food_count += 1
@@ -90,9 +85,9 @@ def import_from_excel(excel_file):
                 distance = row['Kilometers']
 
                 if pd.notna(from_city_name) and pd.notna(to_city_name) and pd.notna(distance):
-                    cursor.execute("SELECT id FROM cities WHERE name = %s;", (str(from_city_name),))
+                    cursor.execute("SELECT id FROM cities WHERE name = ?;", (str(from_city_name),))
                     from_city_id = cursor.fetchone()
-                    cursor.execute("SELECT id FROM cities WHERE name = %s;", (str(to_city_name),))
+                    cursor.execute("SELECT id FROM cities WHERE name = ?;", (str(to_city_name),))
                     to_city_id = cursor.fetchone()
 
                     if from_city_id and to_city_id:
@@ -101,7 +96,7 @@ def import_from_excel(excel_file):
                         
                         # Insert distance from A to B
                         cursor.execute(
-                            "INSERT INTO city_distances (from_city_id, to_city_id, distance) VALUES (%s, %s, %s) ON CONFLICT (from_city_id, to_city_id) DO UPDATE SET distance = EXCLUDED.distance;",
+                            "INSERT INTO city_distances (from_city_id, to_city_id, distance) VALUES (?, ?, ?) ON CONFLICT (from_city_id, to_city_id) DO UPDATE SET distance = excluded.distance;",
                             (from_city_id, to_city_id, float(distance))
                         )
                         distance_count += 1
@@ -137,7 +132,7 @@ def import_from_excel(excel_file):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python3 import-excel-data.py <excel_file_path>")
+        print("Usage: python3 import-excel-data-sqlite.py <excel_file_path>")
         sys.exit(1)
     
     excel_file_path = sys.argv[1]

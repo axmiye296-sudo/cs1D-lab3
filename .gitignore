@@ -79,3 +79,16 @@ core.*
 
 # Static analysis
 *.sarif
+
+# Generated documentation
+html/
+latex/
+
+# Virtual environment
+venv/
+
+# Database files
+*.db
+
+# Data files
+*.xlsx
