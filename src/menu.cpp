@@ -12,6 +12,11 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include "../include/repositories/CityRepository.hpp"
+#include "../include/repositories/FoodRepository.hpp"
+#include "../include/services/CityService.hpp"
+#include "../include/services/FoodService.hpp"
+#include "../include/databaseManager.hpp"
 
 /**
  * @brief Displays the main menu of the application
@@ -26,6 +31,8 @@
  * The menu is formatted with decorative borders and clear instructions
  * for user interaction.
  */
+
+
 void displayMainMenu() {
     std::cout << "\n" << std::string(60, '=') << std::endl;
     std::cout << "    Welcome to European Vacation - Trip Planning App" << std::endl;
@@ -68,32 +75,46 @@ void displayMainMenu() {
  * @todo Add input validation and error handling
  * @todo Integrate with database and service layers
  */
-int handleMenuChoice() {
+int handleMenuChoice(DatabaseManager& database) {
     int choice;
     std::cin >> choice;
 
     switch (choice) {
         case 1:
             std::cout << "create new User function" << std::endl;
-            break;
+        break;
         case 2:
             std::cout << "login into account function" << std::endl;
-            break;
+        break;
         case 3:
-            std::cout << "display cities and foods" << std::endl;
-            std::cin.ignore();
-            std::cin.get();
-            break;
+            showCityAndFood(database);
+        std::cin.ignore();
+        std::cin.get();
+        break;
         case 4:
             std::cout << "go to create a trip menu" << std::endl;
-            break;
+        break;
         case 0:
             std::cout << "logout and quit" << std::endl;
-            return 0;
+        return 0;
         default:
             std::cout << "ERROR" << std::endl;
-            break;
+        break;
     }
     return 1;
+}
+
+void showCityAndFood(DatabaseManager& database) {
+    CityRepository cityRepo(database);
+    FoodRepository foodRepo(database);
+
+    CityService cityService(cityRepo);
+    FoodService foodService(foodRepo);
+
+    cityService.displayAllCities();
+    foodService.displayAllFoods();
+
+    std::cin.ignore();
+    std::cin.get();
 }
 

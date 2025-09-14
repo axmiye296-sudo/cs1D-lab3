@@ -10,6 +10,7 @@
  */
 
 #include "../include/header.hpp"
+#include "../include/databaseManager.hpp"
 
 /**
  * @brief Main entry point of the application
@@ -28,8 +29,26 @@
  *       proper database integration and user management in future iterations.
  */
 int main() {
-    displayMainMenu();
-    handleMenuChoice();
+    DatabaseManager& database = DatabaseManager::getInstance();
+
+    // Connect to database
+    if (!database.connect()) {
+        std::cerr << "Failed to connect to database!" << std::endl;
+        return 1;
+    }
+
+    // Main application loop
+    while (true) {
+        displayMainMenu();
+        int result = handleMenuChoice(database);
+
+        if (result == 0) {
+            break;  // User chose to quit
+        }
+    }
+
+    // Disconnect from database
+    database.disconnect();
 
     return 0;
 }

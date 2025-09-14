@@ -6,9 +6,11 @@
 #ifndef DATABASE_MANAGER_HPP
 #define DATABASE_MANAGER_HPP
 
-#include "header.hpp"
 #include "databaseInterface.hpp"
+#include "V.hpp"
 #include <sqlite3.h>
+#include <memory>
+#include <string>
 
 class DatabaseManager : public DatabaseInterface {
 private:
