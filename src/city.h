@@ -24,6 +24,9 @@ class City {
         /// @brief Parameterized Constructor
         City(const int& id, const std::string& name) : cityId(id), cityName(name) {}
 
+        /// @brief Dstructor
+        ~City() {}
+
         /// @brief Getter Functions
         int getCityId() const { return cityId; }
         std::string getCityName() const { return cityName;}
