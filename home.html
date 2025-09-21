@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    <title>Cities List</title>
+    <link rel="stylesheet" href="home.css">
+    
+    <!-- Include the cities.js file -->
+    <script src="cities.js"></script>
+    <script src="home.js"></script>
+</head>
+
+<body>
+    <!-- CONTAINER -->
+    <div id="container">
+        <div id="title">City Food API Test</div>
+        
+        <div class="header">1. Get All Cities</div>
+        <p>GET /api/cities</p>
+        <button onclick="getAllCities()">Get All Cities</button>
+        <div id="cities-result"></div>
+        
+        <div class="header">2. Get All Cities with Foods</div>
+        <p>GET /api/cities/food</p>
+        <button onclick="getAllCitiesWithFood()">Get All Cities with Foods</button>
+        <div id="cities-food-result"></div>
+        
+        <div class="header">3. Get Foods for Specific City</div>
+        <p>GET /api/cities/{id}/food</p>
+        <input type="number" id="cityId" placeholder="City ID" value="1">
+        <button onclick="getCityFood()">Get City Food</button>
+        <div id="city-food-result"></div>
+    </div>
+    <!-- END CONTAINER -->
+    
+    
+
+    
+</body>
