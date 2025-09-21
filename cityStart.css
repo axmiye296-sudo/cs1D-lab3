@@ -1,0 +1,45 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, .6);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+}
+
+/* "Choose a starting location" */
+#text {
+    text-align: center;
+    font-family: 'Brush Script MT', cursive;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px #d7d2ca;
+    color: #725245;
+    margin-top: 5px;
+}
+
+/* Styling for the starting location buttons */
+.london-button, .berlin-button, .paris-button, .custom-button {
+    margin: 35px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-color: #725245;
+    box-shadow: 2px 2px 4px rosybrown;
+}
+.london-button:hover, .berlin-button:hover, .paris-button:hover, .custom-button:hover {
+    background-color: rosybrown;
+    font-weight: bold;
+    font-style: italic;
+}
