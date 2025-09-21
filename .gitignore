@@ -79,3 +79,19 @@ core.*
 
 # Static analysis
 *.sarif
+<<<<<<< HEAD
+=======
+
+# Generated documentation
+html/
+latex/
+
+# Virtual environment
+venv/
+
+# Database files
+*.db
+
+# Data files
+*.xlsx
+>>>>>>> sqlite_branch_setup
