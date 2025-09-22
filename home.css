@@ -9,15 +9,15 @@ body {
 button {
     background-color: #9c7e70; /* Green */
     border: none;
+    width: 100%;
     color: white;
     padding: 10px 15px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 10px 0px;
     cursor: pointer;
-    border-radius: 12px;
     font-family: 'Georgia';
 }
 

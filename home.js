@@ -13,31 +13,45 @@ window.onload = async function() {
         container.innerHTML = '';
 
         data.cities.forEach(city => {
-        // Create city name button
-        const cityBtn = document.createElement('button');
-        cityBtn.textContent = city.name;
-        cityBtn.style.display = 'block';
-        cityBtn.style.margin = '8px 0';
+            // Create city name
+            const cityBtn = document.createElement('span');
+            cityBtn.textContent = city.name;
+            cityBtn.style.display = 'block';
+            cityBtn.style.flex = '1';
 
-        // Create collapsible content div (hidden by default)
-        const foodDiv = document.createElement('div');
-        foodDiv.style.display = 'none';
-        foodDiv.style.marginLeft = '20px';
+            // Arrow icon
+            const arrow = document.createElement('i');
+            arrow.className = 'fa-solid fa-chevron-down';
+            arrow.style.marginRight = '8px';
+            arrow.style.transition = 'transform 0.2s';
 
-        cityBtn.onclick = async () => {
-            if (foodDiv.style.display === 'none') {
-            const foodData = await citiesAPI.getCityFood(city.id);
-            foodDiv.innerHTML = foodData.food.length
-                ? foodData.food.map(f => `<div>${f.name} - $${f.price}</div>`).join('')
-                : '<div>No foods found</div>';
-            foodDiv.style.display = 'block';
-            } else {
+            // Container for city name and arrow
+            const cityRow = document.createElement('button');
+            cityRow.style.display = 'flex';
+            cityRow.appendChild(arrow);
+            cityRow.appendChild(cityBtn);
+
+            // Collapsible content div (hidden by default)
+            const foodDiv = document.createElement('div');
             foodDiv.style.display = 'none';
-            }
-        };
+            foodDiv.style.marginLeft = '20px';
 
-        container.appendChild(cityBtn);
-        container.appendChild(foodDiv);
+            cityBtn.onclick = async () => {
+                if (foodDiv.style.display === 'none') {
+                    const foodData = await citiesAPI.getCityFood(city.id);
+                    foodDiv.innerHTML = foodData.food.length
+                        ? foodData.food.map(f => `<div>${f.name} - $${f.price}</div>`).join('')
+                        : '<div>No foods found</div>';
+                    foodDiv.style.display = 'block';
+                    arrow.className = 'fa-solid fa-chevron-up';
+                } else {
+                    foodDiv.style.display = 'none';
+                    arrow.className = 'fa-solid fa-chevron-down';
+                }
+            };
+
+            container.appendChild(cityRow);
+            container.appendChild(foodDiv);
         });
     } catch (error) {
         console.error('API connection failed:', error);
