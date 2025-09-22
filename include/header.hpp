@@ -7,7 +7,10 @@
 #include <vector>
 #include <iomanip>
 
+class DatabaseManager;
+
 void displayMainMenu();
-int handleMenuChoice();
+int handleMenuChoice(DatabaseManager& database);
+void showCityAndFood(DatabaseManager& database);
 
 #endif
