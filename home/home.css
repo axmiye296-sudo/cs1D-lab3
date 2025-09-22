@@ -24,7 +24,7 @@ button {
 #container {
     background-color: rgb(215, 210, 202, .8);
     padding: 0px 30px;
-    height: 100vh;
+    min-height: 100vh;
     width: 500px;
     justify-content: center;
     align-items: center;
@@ -58,7 +58,7 @@ button {
     margin: 0px 0px 0px 10px;
     cursor: pointer;
     font-family: 'Georgia';
-    flex-basis: 170px;
+    width: 30%;
 }
 
 .header {
