@@ -13,21 +13,16 @@
     <div id="container">
         <div id="title">City Food API Test</div>
         
-        <div class="header">1. Get All Cities</div>
-        <p>GET /api/cities</p>
-        <button onclick="getAllCities()">Get All Cities</button>
-        <div id="cities-result"></div>
         
-        <div class="header">2. Get All Cities with Foods</div>
-        <p>GET /api/cities/food</p>
-        <button onclick="getAllCitiesWithFood()">Get All Cities with Foods</button>
-        <div id="cities-food-result"></div>
-        
-        <div class="header">3. Get Foods for Specific City</div>
+        <div class="header">Find City</div>
         <p>GET /api/cities/{id}/food</p>
         <input type="number" id="cityId" placeholder="City ID" value="1">
-        <button onclick="getCityFood()">Get City Food</button>
         <div id="city-food-result"></div>
+
+        <div id="cities-food-result"></div>
+
+        <!-- CITITES + FOODS -->
+        <div id="cities-result"></div>
     </div>
     <!-- END CONTAINER -->
     
