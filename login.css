@@ -13,17 +13,17 @@ body {
     background-color: rgba(255, 255, 255, .6);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    width: 350px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    width: 370px;
 }
 /* TITLE - EUROPEAN VACATION */
 #title {
     text-align: center;
     font-family: 'Brush Script MT', cursive;
-    font-size: 50px;
+    font-size: 55px;
     font-weight: bold;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 4px #d7d2ca;
+    text-shadow: 2px 2px 3px #c3b1a5;
     color: #725245;
 }
 
