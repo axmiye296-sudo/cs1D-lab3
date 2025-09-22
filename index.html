@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <title>Cities List</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+     <div id="container">
+         <div id="title">List of Cities</div>
+        <button onclick="getAllCities()">Get All Cities</button>
+        <div id="cities-result" style="width: 100%"></div>
+
+        <div id="city-food-result"></div>
+     </div>
+
+    <!-- Include the cities.js file -->
+    <script src="cities.js"></script>
+    
+    <script>
+        // UI functions that use the CitiesAPI class
+        async function getAllCities() {
+            try {
+                const data = await citiesAPI.getAllCities();
+                // Create clickable city list
+                const cityList = data.cities.map(city => 
+                    `<div class="city-item" onclick="selectCity(${city.id}, '${city.name}')">
+                        ${city.name}
+                    </div>`
+                ).join('');
+                document.getElementById('cities-result').innerHTML = cityList;
+
+            } catch (error) {
+                document.getElementById('cities-result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+
+         async function getCityFood(cityId) {
+            try {
+                console.log('Fetching food for city ID:', cityId);
+                const data = await citiesAPI.getCityFood(cityId);
+                
+                // Add debugging to see what the API actually returns
+                console.log('API Response:', data);
+                
+                // Check if the response is an array (maybe the API returns array directly)
+                if (Array.isArray(data)) {
+                    const foodList = data.map(item => 
+                        `<div class="food-item">
+                            <i class="fas fa-utensils"></i> ${item.name || item}
+                        </div>`
+                    ).join('');
+                    
+                    document.getElementById('city-food-result').innerHTML = 
+                        `<div class="food-section">
+                            <h3>Local Food Specialties</h3>
+                            ${foodList}
+                        </div>`;
+                    return;
+                }
+                
+                // Check if food exists and is an array (changed from foodItems to food)
+                if (!data || !data.food || !Array.isArray(data.food)) {
+                    console.log('No food found. Full response:', JSON.stringify(data, null, 2));
+                    document.getElementById('city-food-result').innerHTML = 
+                        `<div class="error">
+                            No food items found for this city.<br>
+                            Response: ${JSON.stringify(data, null, 2)}
+                        </div>`;
+                    return;
+                }
+                
+                // Use data.food instead of data.foodItems
+                const foodList = data.food.map(item => 
+                    `<div class="food-item">
+                         ${item.name}
+                        <span class="price">€${item.price}</span>
+                    </div>`
+                ).join('');
+                
+                document.getElementById('city-food-result').innerHTML = 
+                    `<div class="food-section">
+                        <h3>Local Food Specialties in ${data.city_name}</h3>
+                        <p class="food-count">${data.count} items available</p>
+                        ${foodList}
+                    </div>`;
+            } catch (error) {
+                console.error('Error fetching city food:', error);
+                document.getElementById('city-food-result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+
+        function selectCity(cityId, cityName) {
+            
+            // Pass the cityId directly to getCityFood
+            getCityFood(cityId);
+        }
+            
+        
+    </script>
+</body>
+</html>
