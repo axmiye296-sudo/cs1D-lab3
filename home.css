@@ -7,7 +7,7 @@ body {
 }
 
 button {
-    background-color: #9c7e70; /* Green */
+    background-color: #9c7e70;
     border: none;
     width: 100%;
     color: white;
@@ -42,6 +42,23 @@ button {
     letter-spacing: 2px;
     text-shadow: 2px 2px 3px #c3b1a5;
     color: #725245;
+    width: 100%;
+}
+
+#trip {
+    border: 2px solid #9c7e70;
+    background-color: #c3b1a5;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 15px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px 0px 10px;
+    cursor: pointer;
+    font-family: 'Georgia';
+    flex-basis: 170px;
 }
 
 .header {
