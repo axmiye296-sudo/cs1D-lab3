@@ -1,5 +1,13 @@
 # cs1D-lab3
 
+MAIN TO DO
+
+1. Put repeating classes in global.css file
+
+2. Fix log in page (more info in log in section of readMe file)
+
+- - - 
+
 To run the code do the following:
 
 1. In terminal type
