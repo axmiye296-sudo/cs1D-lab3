@@ -1,12 +1,7 @@
 body {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
-    background-size: cover;
-    background-position: center;
 }
 
 #container {
@@ -19,12 +14,7 @@ body {
 /* TITLE - EUROPEAN VACATION */
 #title {
     text-align: center;
-    font-family: 'Brush Script MT', cursive;
     font-size: 55px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 3px #c3b1a5;
-    color: #725245;
 }
 
 /* SUBTEXT */

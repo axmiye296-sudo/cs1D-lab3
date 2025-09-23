@@ -1,15 +1,10 @@
 body {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
-    background-size: cover;
-    background-position: center;
 }
 
-.container {
+#container {
     background-color: rgba(255, 255, 255, .6);
     padding: 40px;
     border-radius: 15px;
@@ -18,14 +13,9 @@ body {
 }
 
 /* "Choose a starting location" */
-#text {
+#title {
     text-align: center;
-    font-family: 'Brush Script MT', cursive;
-    font-size: 20px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px #d7d2ca;
-    color: #725245;
+    font-size: 35px;
     margin-top: 5px;
 }
 

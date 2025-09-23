@@ -1,0 +1,18 @@
+/* All html files for the frontend share these rulesets below
+   Therefore changing anything in this file will affect all html */
+
+body {
+    display: flex;
+    justify-content: center;
+    background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#title {
+    font-family: 'Brush Script MT', cursive;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 3px #c3b1a5;
+    color: #725245;
+}
