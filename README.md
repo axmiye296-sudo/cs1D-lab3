@@ -1,10 +1,16 @@
 # cs1D-lab3
 
-MAIN TO DO
+TO DO
 
 - [x] 1. ~~Put repeating classes in global.css file~~
 
-- [ ] 2. Fix log in page (more info in log in section of readMe file)
+- [ ] 2. Fix log in page :
+    [ ] a. Remove "name" and change it to make user input a code to login to admin
+
+    [ ] b. Add a button to allow traveler to go to home page 
+
+
+- [ ] 3. Figure out how to make createTrip have certain starting locations based off of option chosen from starting location
 
 - - - 
 
@@ -26,6 +32,28 @@ node sever.js
 
 - - -
 
+Varaibles (in global.css)
+Used for consistency. It allows us to make changes faster too, we won't need to search through all css files to manually change anything.
+
+When declaring variables please keep them in the global.css file. Feel free to change the variable names to something better. Better examples are in any css file
+
+How to use:
+    1. Go to any css file of your choice. It will work with any css file include global.css file
+    
+    2. When filling out a style where you can use a varaible do:
+        var(--varName)
+    
+        *change varName to varaible name don't change anything else
+
+Example:
+--background: #ffffff;  (varaible declared in global.css)
+
+#container {
+    background: var(--background); (in any CSS file sets background to color declared in global.css)
+}
+
+- - -
+
 DIRECTORY / FILES
 
 adminEdit
@@ -40,7 +68,9 @@ createTrip
 
 traveler UI allowing traveler to add cities to their trip
 
-    - no files yet
+    - creatTrip.css
+    - createTrip.html
+    - createTrip.js
 
 - - -
 
@@ -60,11 +90,6 @@ login page for admin
 
     - login.css
     - login.html
-
-TO DO
-    1. Remove "name" and change it to make user input a code to login to admin
-
-    2. Add a button to allow traveler to go to home page 
 
 - - - 
 

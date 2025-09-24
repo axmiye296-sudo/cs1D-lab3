@@ -1,22 +1,63 @@
 /* All html files for the frontend share these rulesets below
    Therefore changing anything in this file will affect all html */
 
-body {
-    display: flex;
-    justify-content: center;
-    background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+/* CSS Custom Properties (Variables) 
+  Used for theming and consistent styling throughout the application so you
+  don't need to keep copy and pasting values. Feel free to change or override if
+  you want */
+
+:root {
+  /* Color variables */
+  --background: rgb(215, 210, 202, .8);  /* plain bg color - light beige */
+  --primary-brown: #9c7e70;              /* main colors: headers, city boxes */
+  --secondary-brown: #c3b1a5;            /* buttons, highlights */
+  --dark-brown: #725245;                 /* titles, borders */
+  --default-text-color: #ffffff;         /* text color - off white */
+  --box-shadow-color: rgba(114, 82, 69, 0.5);
+  --text-shadow-color: #c3b1a5;
+  
+  /* Font variables */
+  --title-font: 'Brush Script MT', cursive;
+  --body-font: 'Georgia', serif;
+  
+  /* Border variables */
+  --border-style: 2px solid var(--dark-brown);
+  --border-radius: 5px;
+  
+  /* Shadow variables */
+  --box-shadow: var(--box-shadow-color) 2px 2px 5px;
+  --text-shadow: 2px 2px 3px var(--text-shadow-color);
+
 }
 
+body {
+  display: flex;
+  justify-content: center;
+  background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+/* for main titles */
 .title {
-    font-size: 55px;
-    width: 100%;
-    font-family: 'Brush Script MT', cursive;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 3px #c3b1a5;
-    color: #725245;
+  font-size: 55px;
+  width: 100%;
+  font-family: var(--title-font);
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: var(--text-shadow);
+  color: var(--dark-brown);
+}
+
+/* small container box that holds content in center of page
+  example: login, cityStart */
+.container {
+  background-color:var(--background);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  width: 350px;
+  border: var(--border-style);
 }

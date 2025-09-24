@@ -1,4 +1,4 @@
-// given by Rita
+// given by Rita - I don't think this is needed for my javascript but keeping just incase
 const API_BASE = 'http://localhost:3001';
 
 class CitiesAPI {

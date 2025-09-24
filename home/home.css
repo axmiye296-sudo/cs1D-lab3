@@ -1,9 +1,9 @@
 /* Icon + City Names Box */
 button {
-    background-color: #9c7e70;
+    background-color: var(--primary-brown);
     border: none;
     width: 100%;
-    color: white;
+    color: var(--default-text-color);
     padding: 10px 15px;
     text-align: left;
     text-decoration: none;
@@ -11,12 +11,12 @@ button {
     font-size: 16px;
     margin: 10px 0px;
     cursor: pointer;
-    font-family: 'Georgia';
+    font-family: var(--body-font);
 }
 
 /* plain bg color above image */
 #container {
-    background-color: rgb(215, 210, 202, .8);
+    background-color: var(--background);
     padding: 0px 30px;
     min-height: 100vh;
     width: 500px;
@@ -26,15 +26,15 @@ button {
     flex-direction: column;
     border-width: 0px 15px;
     border-style: double;
-    border-color: #725245;
+    border-color: var(--dark-brown);
 }
 
 /* Create my trip button */
 #trip {
-    border: 2px solid #9c7e70;
-    background-color: #c3b1a5;
+    border: 2px solid var(--primary-brown);
+    background-color: var(--secondary-brown);
     border-radius: 5px;
-    color: white;
+    color: var(--default-text-color);
     padding: 10px 15px;
     text-align: left;
     text-decoration: none;
@@ -42,27 +42,6 @@ button {
     font-size: 16px;
     margin: 0px 0px 0px 10px;
     cursor: pointer;
-    font-family: 'Georgia';
+    font-family: var(--body-font);
     width: 30%;
-}
-
-/* Ignore - hidden - for subtitle */
-.header {
-    font-family: 'Arial', sans-serif;
-    font-size: 20px;
-    color: #4a4a4a;
-    margin-top: 10px;
-}
-
-/* Ignore - hidden - for searching a specific city */
-input[type="number"] {
-    padding: 3px 5px 8px;
-    border: 2px solid #725245;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 200px;
-    margin-top: 10px;
-    font-family: 'Georgia';
-    color: #725245;
-    background-color: white;
 }
