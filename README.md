@@ -37,6 +37,8 @@ Used for consistency. It allows us to make changes faster too, we won't need to 
 
 When declaring variables please keep them in the global.css file. Feel free to change the variable names to something better. Better examples are in any css file
 
+Can read more about it here: https://www.w3schools.com/css/css3_variables.asp
+
 How to use:
     1. Go to any css file of your choice. It will work with any css file include global.css file
     
