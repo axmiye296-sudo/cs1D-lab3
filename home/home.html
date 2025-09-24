@@ -3,10 +3,12 @@
     <title>Cities List</title>
     <link rel="stylesheet" href="../global.css">
     <link rel="stylesheet" href="home.css">
+
+    <!-- Font Awesome - Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Include the cities.js file -->
-    <script src="cities.js"></script>
+    <!-- Javascript file -->
+    <script src="../cities.js"></script>
     <script src="home.js"></script>
 </head>
 
@@ -15,18 +17,19 @@
     <div id="container">
 
         <div style="display: flex; align-items: center;">
-            <div id="title">List of Cities</div>
-            <a id="trip" href="cityStart.html">create my trip</a>
+            <div class="title">List of Cities</div>
+            <a id="trip" href="../cityStart/cityStart.html">create my trip</a>
         </div>
         
         
-        
+        <!-- Hidden - was supposed to be search for city feature -->
         <!-- <div class="header">Find City</div>
         <input type="number" id="cityId" placeholder="City ID" value="1">
         <div id="city-food-result"></div> -->
 
-        <!-- CITITES + FOODS -->
+        <!-- CITITES + FOODS names - Data from home.js file -->
         <div id="cities-result" style="overflow: auto; max-height: 600px; width: 100%;"></div>
+
     </div>
     <!-- END CONTAINER -->
     

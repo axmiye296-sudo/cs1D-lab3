@@ -7,9 +7,13 @@ body {
     background-image: url('https://wallpapercave.com/wp/wp11852063.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
 }
 
-#title {
+.title {
+    font-size: 55px;
+    width: 100%;
     font-family: 'Brush Script MT', cursive;
     font-weight: bold;
     letter-spacing: 2px;

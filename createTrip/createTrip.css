@@ -1,0 +1,136 @@
+body {
+    justify-content: space-evenly;
+    padding: 0px 50px;
+}
+
+/* List headers - list of cities / my list */
+.header {
+    font-size: 25px;
+    font-family: 'Brush Script MT', cursive;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 3px #c3b1a5;
+    color: #725245;
+    margin-top: 10px;
+}
+
+/* List of Cities - left side background */
+#leftBG {
+    background-color: rgb(215, 210, 202, .8);
+    padding: 0px 30px;
+    min-height: 100vh;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    border-width: 0px 15px;
+    border-style: double;
+    border-color: #725245;
+    flex-grow: 3;
+}
+
+/* Right side container - holding title, selected cities and submit button */
+#rightContainer {
+    display: flex;
+    flex-grow: 2;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px 50px;
+}
+
+/* Selected cities result box */
+#selected-cities-result {
+    margin: 10px 0px;
+    padding: 10px 30px;
+    background-color: rgb(215, 210, 202, .8);
+    border: 2px solid #725245;
+    box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 5px;
+    border-radius: 10px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 200px;
+}
+
+/* Create my trip button */
+#submit {
+    border: 2px solid #9c7e70;
+    background-color: #c3b1a5;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 15px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px 0px 10px;
+    cursor: pointer;
+    font-family: 'Georgia';
+    align-self: end;
+}
+
+/* City name box styling */
+.city-row, .selected-city-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    margin: 10px 0;
+    background-color: #c3b1a5;
+    border: 2px solid #9c7e70;
+    box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+/* Plus button and minus button styling */
+.city-row button, .selected-city-row .minus-btn  {
+    background-color: #9c7e70;
+    color: white;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* plus button hover */
+.city-row button:hover {
+    background-color: #45a049;
+}
+
+/* minus button hover */
+.selected-city-row .minus-btn:hover {
+    background-color: #da190b;
+}
+
+/* Selected cities list container */
+#selected-cities-list {
+    min-height: 200px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* Number indicator in selected cities */
+.selected-city-row .number {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* City name in selected cities */
+.selected-city-row .city-name {
+    flex: 1;
+}
+
+/* Drag states */
+.selected-city-row.dragging {
+    opacity: 0.5;
+}
+
+.selected-city-row.drag-over {
+    background-color: #bbdefb;
+}

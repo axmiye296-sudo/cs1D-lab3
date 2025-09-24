@@ -13,7 +13,7 @@ body {
 }
 
 /* "Choose a starting location" */
-#title {
+.title {
     text-align: center;
     font-size: 35px;
     margin-top: 5px;

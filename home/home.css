@@ -1,3 +1,4 @@
+/* Icon + City Names Box */
 button {
     background-color: #9c7e70;
     border: none;
@@ -13,6 +14,7 @@ button {
     font-family: 'Georgia';
 }
 
+/* plain bg color above image */
 #container {
     background-color: rgb(215, 210, 202, .8);
     padding: 0px 30px;
@@ -27,11 +29,7 @@ button {
     border-color: #725245;
 }
 
-#title {
-    font-size: 55px;
-    width: 100%;
-}
-
+/* Create my trip button */
 #trip {
     border: 2px solid #9c7e70;
     background-color: #c3b1a5;
@@ -48,6 +46,7 @@ button {
     width: 30%;
 }
 
+/* Ignore - hidden - for subtitle */
 .header {
     font-family: 'Arial', sans-serif;
     font-size: 20px;
@@ -55,6 +54,7 @@ button {
     margin-top: 10px;
 }
 
+/* Ignore - hidden - for searching a specific city */
 input[type="number"] {
     padding: 3px 5px 8px;
     border: 2px solid #725245;

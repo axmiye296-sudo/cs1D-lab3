@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>Cities List</title>
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="createTrip.css">
+
+    <!-- Font Awesome - Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Javascript file -->
+    <script src="../cities.js"></script>
+    <script src="createTrip.js"></script>
+</head>
+
+<body>
+
+    <!-- LEFT SIDE - LIST OF CITIES-->
+    <div id="leftBG">
+        <div class="header">List of Cities</div>
+
+        <!-- cities to select from - data in createTrip.js -->
+        <div id="cities-result"></div>
+
+    </div>
+    <!-- END LEFT SIDE -->
+
+    <!-- RIGHT SIDE - CHOSEN CITIES -->
+    <div id="rightContainer">
+        <div class="header">My List</div>
+
+        <!-- list of chosen cities -->
+        <div id="selected-cities-result"></div>
+
+        <!-- submit button - data in createTrip.js -->
+        <button id="submit" onclick="saveListAndSubmit()">Submit</button>
+    </div>
+    <!-- END RIGHT SIDE -->
+
+    
+    
+
+    
+</body>
