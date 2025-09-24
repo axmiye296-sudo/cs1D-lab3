@@ -79,6 +79,8 @@ core.*
 
 # Static analysis
 *.sarif
+<<<<<<< HEAD
+=======
 
 # Generated documentation
 html/
@@ -92,3 +94,4 @@ venv/
 
 # Data files
 *.xlsx
+>>>>>>> sqlite_branch_setup
