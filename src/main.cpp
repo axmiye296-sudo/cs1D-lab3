@@ -11,6 +11,7 @@
 
 #include "../include/header.hpp"
 #include "../include/databaseManager.hpp"
+#include "apis/CityApi.cpp"
 
 /**
  * @brief Main entry point of the application
@@ -29,6 +30,7 @@
  *       proper database integration and user management in future iterations.
  */
 int main() {
+    startApiServer();
     DatabaseManager& database = DatabaseManager::getInstance();
 
     // Connect to database

@@ -90,9 +90,16 @@ void FoodService::displayFoodsByCityId(int cityId) {
 }
 
 // Helper method - displays one food
+//void FoodService::displayFood(const Food& food) {
+//    // Display food information
+//    std::cout << "ID: " << food.getId() << ", Name: " << food.getName()
+//              << ", City ID: " << food.getCityId() << ", Price: €" << food.getPrice() << std::endl;
+//    // Example output: "ID: 1, Name: Croissant, City ID: 1, Price: €2.5"
+//}
+
 void FoodService::displayFood(const Food& food) {
     // Display food information
-    std::cout << "ID: " << food.getId() << ", Name: " << food.getName()
-              << ", City ID: " << food.getCityId() << ", Price: €" << food.getPrice() << std::endl;
+    std::cout << food.getName()
+              << ", Price: €" << food.getPrice() << std::endl;
     // Example output: "ID: 1, Name: Croissant, City ID: 1, Price: €2.5"
 }

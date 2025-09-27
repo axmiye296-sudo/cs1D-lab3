@@ -4,8 +4,6 @@
 #include "../header.hpp"
 #include "../entities/City.hpp"
 
-class DatabaseManager;
-
 class CityRepository {
   private:
   DatabaseManager& database;  // Reference to our database connection - we need this to run SQL querie;

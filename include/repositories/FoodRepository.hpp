@@ -4,7 +4,6 @@
 #include "../header.hpp"
 #include "../entities/Food.hpp"
 
-class DatabaseManager;
 
 class FoodRepository {
   private:

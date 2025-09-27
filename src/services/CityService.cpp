@@ -1,5 +1,6 @@
 #include "../../include/services/CityService.hpp"
 #include "../../include/repositories/CityRepository.hpp"
+#include "../../include/services/FoodService.hpp"
 #include <iostream>
 
 
@@ -46,7 +47,35 @@ void CityService::displayAllCities() {
     // Print another line of equal signs
 }
 
+
+void CityService::displayCitiesWithFood(FoodService& foodService) {
+
+    // Get all cities from the database
+    V<City> cities = getAllCities();
+
+    // Display each city with its food
+    for (int i = 0; i < cities.size(); i++) {
+        City city = cities[i];
+
+        // Display city name
+        std::cout << "\n" << city.getName() << std::endl;
+        std::cout << std::string(city.getName().length(), '-') << std::endl;
+
+        // Get and display foods for this city
+        V<Food> foods = foodService.getFoodsByCityId(city.getId());
+        if (foods.size() > 0) {
+            for (int j = 0; j < foods.size(); j++) {
+                Food food = foods[j];
+                std::cout << "  • " << food.getName() << " - $" << food.getPrice() << std::endl;
+            }
+        } else {
+            std::cout << "  No foods available for this city" << std::endl;
+        }
+    }
+}
+
+
 void CityService::displayCity(const City& city) {
-    std::cout << "ID: " << city.getId() << ", Name: " << city.getName() << std::endl;
-    // Example output: "ID: 1, Name: Paris"
+    std::cout << city.getName() << std::endl;
+    // Example output: Name: Paris"
 }
