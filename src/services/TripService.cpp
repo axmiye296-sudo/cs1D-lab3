@@ -17,7 +17,7 @@ TripService::TripService(TripRepository& tripRepo, CityRepository& cityRepo,
 
 
 Trip TripService::planParisTour() {
-    std::cout << "\n🗼 Planning Paris Tour - Visiting Available Cities\n" << std::endl;
+    std::cout << "\n🗼 Planning Paris Tour - Visiting All 11 European Cities\n" << std::endl;
 
     // Get all cities
     V<City> allCities = cityRepo.findAll();
@@ -30,25 +30,36 @@ Trip TripService::planParisTour() {
         std::cout << "Paris not found, using " << allCities[0].getName() << " as starting city" << std::endl;
     }
 
-    // Create simple route with available cities (limit to 5 for testing)
+    // ✅ REQUIREMENT 3: Visit ALL cities except Paris (should be 10 other cities + Paris = 11 total)
     V<int> citiesToVisit;
-    int maxCities = (allCities.size() > 5) ? 5 : allCities.size() - 1;
 
-    for (int i = 0; i < allCities.size() && citiesToVisit.size() < maxCities; i++) {
+    // Add ALL other cities to the route (not just 5)
+    for (int i = 0; i < allCities.size(); i++) {
         if (allCities[i].getId() != parisId) {
             citiesToVisit.push_back(allCities[i].getId());
         }
     }
 
-    // Calculate simple route
+    std::cout << "🎯 Planning route to visit " << (citiesToVisit.size() + 1) << " cities total:" << std::endl;
+    std::cout << "   - Starting city: Paris (or substitute)" << std::endl;
+    std::cout << "   - Other cities to visit: " << citiesToVisit.size() << std::endl;
+
+    // Calculate optimal route using recursive closest-city algorithm
     V<int> route = calculateOptimalRoute(parisId, citiesToVisit);
 
     // Create and save trip
     Trip parisTrip = createAndSaveTrip(parisId, TripTypes::PARIS_TOUR, route);
 
     std::cout << "✅ Paris tour planned successfully!" << std::endl;
-    std::cout << "🏙️ Cities to visit: " << route.size() << std::endl;
+    std::cout << "🏙️ Total cities in route: " << route.size() << " cities" << std::endl;
     std::cout << "🎯 Total distance: " << parisTrip.getTotalDistance() << " km" << std::endl;
+
+    // Verify we have the expected number of cities
+    if (route.size() >= 11) {
+        std::cout << "✅ Requirement met: Visiting all 11 European cities" << std::endl;
+    } else {
+        std::cout << "⚠️  Warning: Only " << route.size() << " cities available (need 11 for full requirement)" << std::endl;
+    }
 
     return parisTrip;
 }
