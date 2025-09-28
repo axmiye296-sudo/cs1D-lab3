@@ -93,3 +93,29 @@ venv/
 
 # Data files
 *.xlsx
+
+# API executables
+api_server
+main
+
+# Crow header file (if you downloaded it)
+include/crow.h
+
+# Frontend build artifacts (if you add any)
+frontend/dist/
+frontend/node_modules/
+
+# Test executables
+test_tripCity
+
+# Python cache (for your data import script)
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter notebooks (if any)
+*.ipynb
+
+# Backup files
+*.bak
+*.backup

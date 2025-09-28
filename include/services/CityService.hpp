@@ -5,6 +5,7 @@
 #include "../entities/City.hpp"
 
 class CityRepository;
+class FoodService;
 
 class CityService {
     private:
@@ -15,6 +16,7 @@ class CityService {
 
         V<City> getAllCities();
         void displayAllCities();
+        void displayCitiesWithFood(FoodService& foodService);
 
     private:
         void displayCity(const City& city);    //to display one city
