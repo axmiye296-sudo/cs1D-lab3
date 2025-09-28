@@ -131,9 +131,20 @@ bool TripRepository::save(Trip& trip) {
             query = buildInsertQuery(trip);
 
             if (database.executeQuery(query)) {
-                // ✅ TEMPORARY FIX: Set a dummy ID for testing
-                static int dummyId = 1;
-                trip.setId(dummyId++);
+                // ✅ PROPER FIX: Get the actual auto-generated ID from database
+                std::string getIdQuery = "SELECT last_insert_rowid()";
+                auto result = database.executeSelect(getIdQuery);
+
+                if (!result.empty() && !result[0].empty()) {
+                    int newId = std::stoi(result[0][0]);
+                    trip.setId(newId);
+                    std::cout << "✅ Trip saved with database ID: " << newId << std::endl;
+                } else {
+                    // Fallback to incremental ID if database query fails
+                    static int dummyId = 1;
+                    trip.setId(dummyId++);
+                    std::cout << "⚠️ Using fallback ID: " << trip.getId() << std::endl;
+                }
 
                 return true;
             }
@@ -146,8 +157,6 @@ bool TripRepository::save(Trip& trip) {
         std::cerr << "Error saving trip: " << e.what() << std::endl;
         return false;
     }
-
-    return false;
 }
 
 

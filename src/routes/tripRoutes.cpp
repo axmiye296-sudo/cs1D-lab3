@@ -32,6 +32,20 @@ void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityServ
             result["trip"]["type"] = parisTrip.getTripType();
             result["trip"]["start_city_id"] = parisTrip.getStartCityId();
             result["trip"]["total_distance"] = parisTrip.getTotalDistance();
+            double debugDistance = parisTrip.getTotalDistance();
+            std::cout << "🔍 API DEBUG: Trip ID = " << parisTrip.getId() << std::endl;
+            std::cout << "🔍 API DEBUG: Trip distance = " << debugDistance << std::endl;
+            std::cout << "🔍 API DEBUG: Trip type = " << parisTrip.getTripType() << std::endl;
+
+            // Add distance in multiple formats to ensure frontend can find it
+            result["trip"]["distance"] = debugDistance;           // Alternative name
+            result["distance"] = debugDistance;                   // Root level
+            result["totalDistance"] = debugDistance;              // Root level camelCase
+            result["trip"]["totalDistance"] = debugDistance;      // Trip level camelCase
+
+            // Add as string in case there's a number parsing issue
+            result["trip"]["distance_string"] = std::to_string((int)debugDistance) + " km";
+            result["distance_string"] = std::to_string((int)debugDistance) + " km";
             
             // Find start city name
             std::string startCityName = "Unknown";
@@ -102,6 +116,23 @@ void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityServ
             result["trip"]["type"] = londonTrip.getTripType();
             result["trip"]["start_city_id"] = londonTrip.getStartCityId();
             result["trip"]["total_distance"] = londonTrip.getTotalDistance();
+
+
+// ✅ ADD THESE DEBUG LINES (same as Paris tour):
+            double debugDistance = londonTrip.getTotalDistance();
+            std::cout << "🔍 API DEBUG: London Trip ID = " << londonTrip.getId() << std::endl;
+            std::cout << "🔍 API DEBUG: London Trip distance = " << debugDistance << std::endl;
+            std::cout << "🔍 API DEBUG: London Trip type = " << londonTrip.getTripType() << std::endl;
+
+            // Add distance in multiple formats to ensure frontend can find it
+            result["trip"]["distance"] = debugDistance;           // Alternative name
+            result["distance"] = debugDistance;                   // Root level
+            result["totalDistance"] = debugDistance;              // Root level camelCase
+            result["trip"]["totalDistance"] = debugDistance;      // Trip level camelCase
+
+            // Add as string in case there's a number parsing issue
+            result["trip"]["distance_string"] = std::to_string((int)debugDistance) + " km";
+            result["distance_string"] = std::to_string((int)debugDistance) + " km";
             
             // Find start city name
             std::string startCityName = "Unknown";
@@ -149,7 +180,7 @@ void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityServ
     });
     
     // GET /api/trips/custom - Plan and return custom tour
-    CROW_ROUTE(app, "/api/trips/custom").methods("GET"_method)([&tripService, &cityService, &tripCityService]() {
+    CROW_ROUTE(app, "/api/trips/custom").methods("POST"_method)([&tripService, &cityService, &tripCityService](const crow::request& req) {
         try {
             Trip customTrip = tripService.planCustomTour();
             
@@ -169,6 +200,21 @@ void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityServ
             result["trip"]["type"] = customTrip.getTripType();
             result["trip"]["start_city_id"] = customTrip.getStartCityId();
             result["trip"]["total_distance"] = customTrip.getTotalDistance();
+
+
+
+// ✅ ADD DEBUG AND MULTIPLE FORMATS:
+            double debugDistance = customTrip.getTotalDistance();
+            std::cout << "🔍 API DEBUG: Custom Trip ID = " << customTrip.getId() << std::endl;
+            std::cout << "🔍 API DEBUG: Custom Trip distance = " << debugDistance << std::endl;
+            std::cout << "🔍 API DEBUG: Custom Trip type = " << customTrip.getTripType() << std::endl;
+
+            result["trip"]["distance"] = debugDistance;
+            result["distance"] = debugDistance;
+            result["totalDistance"] = debugDistance;
+            result["trip"]["totalDistance"] = debugDistance;
+            result["trip"]["distance_string"] = std::to_string((int)debugDistance) + " km";
+            result["distance_string"] = std::to_string((int)debugDistance) + " km";
             
             // Find start city name
             std::string startCityName = "Unknown";
@@ -236,6 +282,22 @@ void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityServ
             result["trip"]["type"] = berlinTrip.getTripType();
             result["trip"]["start_city_id"] = berlinTrip.getStartCityId();
             result["trip"]["total_distance"] = berlinTrip.getTotalDistance();
+
+
+            // ✅ ADD DEBUG AND MULTIPLE FORMATS:
+            double debugDistance = berlinTrip.getTotalDistance();
+            std::cout << "🔍 API DEBUG: Berlin Trip ID = " << berlinTrip.getId() << std::endl;
+            std::cout << "🔍 API DEBUG: Berlin Trip distance = " << debugDistance << std::endl;
+            std::cout << "🔍 API DEBUG: Berlin Trip type = " << berlinTrip.getTripType() << std::endl;
+
+            result["trip"]["distance"] = debugDistance;
+            result["distance"] = debugDistance;
+            result["totalDistance"] = debugDistance;
+            result["trip"]["totalDistance"] = debugDistance;
+            result["trip"]["distance_string"] = std::to_string((int)debugDistance) + " km";
+            result["distance_string"] = std::to_string((int)debugDistance) + " km";
+
+
             
             // Find start city name
             std::string startCityName = "Unknown";
