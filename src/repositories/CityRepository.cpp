@@ -1,4 +1,4 @@
-#include "../../include/repositories/cityRepository.hpp"
+#include "../../include/repositories/CityRepository.hpp"
 #include "../../include/databaseManager.hpp"              // Include the full DatabaseManager class
 
 CityRepository::CityRepository(DatabaseManager& db) : database(db) {

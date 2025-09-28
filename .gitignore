@@ -6,6 +6,8 @@ a.out.dSYM/
 # Compiled object files
 *.o
 *.obj
+main
+api_server
 
 # Executable files
 *.exe
@@ -36,7 +38,6 @@ CMakeCache.txt
 CMakeFiles/
 CMakeScripts/
 Testing/
-Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
