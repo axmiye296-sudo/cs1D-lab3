@@ -17,7 +17,7 @@ TripService::TripService(TripRepository& tripRepo, CityRepository& cityRepo,
 
 
 Trip TripService::planParisTour() {
-    std::cout << "\n🗼 Planning Paris Tour - Visiting All 11 European Cities\n" << std::endl;
+    std::cout << "\n🗼 Planning Paris Tour - Visiting All European Cities\n" << std::endl;
 
     // Get all cities
     V<City> allCities = cityRepo.findAll();
@@ -47,7 +47,7 @@ Trip TripService::planParisTour() {
     // Calculate optimal route using recursive closest-city algorithm
     V<int> route = calculateOptimalRoute(parisId, citiesToVisit);
 
-    // Create and save trip
+    // Create and save trip - ✅ FIX THIS LINE
     Trip parisTrip = createAndSaveTrip(parisId, TripTypes::PARIS_TOUR, route);
 
     std::cout << "✅ Paris tour planned successfully!" << std::endl;
@@ -127,91 +127,7 @@ Trip TripService::planCustomTour() {
     return customTrip;
 }
 
-Trip TripService::planBerlinTour() {
-    std::cout << "\n🇩🇪 Planning Berlin Tour\n" << std::endl;
 
-    // Similar to Paris tour but with different starting city
-    V<City> allCities = cityRepo.findAll();
-
-    int berlinId = findCityIdByName("Berlin");
-    if (berlinId == -1 && allCities.size() > 2) {
-        berlinId = allCities[2].getId(); // Use third city if Berlin not found
-    }
-
-    V<int> citiesToVisit;
-    int maxCities = (allCities.size() > 4) ? 4 : allCities.size() - 1;
-
-    for (int i = 0; i < allCities.size() && citiesToVisit.size() < maxCities; i++) {
-        if (allCities[i].getId() != berlinId) {
-            citiesToVisit.push_back(allCities[i].getId());
-        }
-    }
-
-    V<int> route = calculateOptimalRoute(berlinId, citiesToVisit);
-    Trip berlinTrip = createAndSaveTrip(berlinId, TripTypes::BERLIN_TOUR, route);
-
-    std::cout << "✅ Berlin tour planned successfully!" << std::endl;
-    std::cout << "🏙️ Cities to visit: " << route.size() << std::endl;
-
-    return berlinTrip;
-}
-
-
-V<int> TripService::calculateOptimalRoute(int startCityId, const V<int>& citiesToVisit) {
-    V<int> route;
-    route.push_back(startCityId);
-
-    // Simple route: just add cities in order (no distance optimization yet)
-    for (int i = 0; i < citiesToVisit.size(); i++) {
-        route.push_back(citiesToVisit[i]);
-    }
-
-    return route;
-}
-
-int TripService::findClosestCity(int currentCityId, const V<int>& remainingCities) {
-    // Simple implementation: return first city
-    if (remainingCities.size() > 0) {
-        return remainingCities[0];
-    }
-    return -1;
-}
-
-double TripService::calculateTotalDistance(const V<int>& cityRoute) {
-    // Simple distance calculation: 150km between each city
-    if (cityRoute.size() < 2) {
-        return 0.0;
-    }
-    return (cityRoute.size() - 1) * 150.0;
-}
-
-Trip TripService::createAndSaveTrip(int startCityId, const std::string& tripType, const V<int>& cityRoute) {
-    // Calculate simple distance
-    double totalDistance = calculateTotalDistance(cityRoute);
-
-    // Create trip (ID = 0 for new trip)
-    Trip trip(0, startCityId, tripType, totalDistance);
-
-    // Save to database
-    bool saved = tripRepo.save(trip);
-    if (saved) {
-        std::cout << "Trip saved to database successfully" << std::endl;
-
-        // Try to add cities to trip (this might fail if TripCityService isn't fully implemented)
-        try {
-            for (int i = 0; i < cityRoute.size(); i++) {
-                tripCityService.addCityToTrip(trip.getId(), cityRoute[i], i + 1);
-            }
-            std::cout << "Cities added to trip successfully" << std::endl;
-        } catch (...) {
-            std::cout << "Note: Could not add cities to trip (TripCityService may need implementation)" << std::endl;
-        }
-    } else {
-        std::cout << "Failed to save trip to database" << std::endl;
-    }
-
-    return trip;
-}
 
 int TripService::findCityIdByName(const std::string& cityName) {
     V<City> allCities = cityRepo.findAll();
@@ -307,3 +223,140 @@ void TripService::displayTripCities(int tripId) {
 
     std::cout << "\n✅ Total cities in route: " << tripCities.size() << std::endl;
 }
+
+// ============================================================================
+// MISSING METHOD IMPLEMENTATIONS
+// ============================================================================
+
+Trip TripService::planBerlinTour() {
+    std::cout << "\n🇩🇪 Planning Berlin Tour\n" << std::endl;
+
+    // Similar to Paris tour but with different starting city
+    V<City> allCities = cityRepo.findAll();
+    std::cout << "Found " << allCities.size() << " cities in database" << std::endl;
+
+    // Find Berlin (or default to third city)
+    int berlinId = findCityIdByName("Berlin");
+    if (berlinId == -1 && allCities.size() > 2) {
+        berlinId = allCities[2].getId(); // Use third city if Berlin not found
+        std::cout << "Berlin not found, using " << allCities[2].getName() << " as starting city" << std::endl;
+    } else if (berlinId == -1) {
+        berlinId = allCities[0].getId(); // Fallback to first city
+        std::cout << "Berlin not found, using " << allCities[0].getName() << " as starting city" << std::endl;
+    }
+
+    // Add ALL other cities to visit (for Berlin tour requirement)
+    V<int> citiesToVisit;
+    for (size_t i = 0; i < allCities.size(); i++) {
+        if (allCities[i].getId() != berlinId) {
+            citiesToVisit.push_back(allCities[i].getId());
+        }
+    }
+
+    std::cout << "🎯 Planning route to visit " << (citiesToVisit.size() + 1) << " cities total:" << std::endl;
+    std::cout << "   - Starting city: Berlin (or substitute)" << std::endl;
+    std::cout << "   - Other cities to visit: " << citiesToVisit.size() << std::endl;
+
+    V<int> route = calculateOptimalRoute(berlinId, citiesToVisit);
+    Trip berlinTrip = createAndSaveTrip(berlinId, TripTypes::BERLIN_TOUR, route);
+
+    std::cout << "✅ Berlin tour planned successfully!" << std::endl;
+    std::cout << "🏙️ Cities to visit: " << route.size() << std::endl;
+    std::cout << "🎯 Total distance: " << berlinTrip.getTotalDistance() << " km" << std::endl;
+
+    return berlinTrip;
+}
+
+Trip TripService::createAndSaveTrip(int startCityId, const std::string& tripType, const V<int>& cityRoute) {
+    // Calculate simple distance
+    double totalDistance = calculateTotalDistance(cityRoute);
+
+    std::cout << "🔍 DEBUG: Creating trip with:" << std::endl;
+    std::cout << "   - Start City ID: " << startCityId << std::endl;
+    std::cout << "   - Trip Type: " << tripType << std::endl;
+    std::cout << "   - Route size: " << cityRoute.size() << " cities" << std::endl;
+    std::cout << "   - Calculated distance: " << totalDistance << " km" << std::endl;
+
+    // Create trip (ID = 0 for new trip)
+    Trip trip(0, startCityId, tripType, totalDistance);
+
+    std::cout << "🔍 DEBUG: Trip created with distance: " << trip.getTotalDistance() << " km" << std::endl;
+
+    // Save to database
+    bool saved = tripRepo.save(trip);
+    if (saved) {
+        std::cout << "Trip saved to database successfully" << std::endl;
+        std::cout << "🔍 DEBUG: Trip ID after save: " << trip.getId() << std::endl;
+        std::cout << "🔍 DEBUG: Trip distance after save: " << trip.getTotalDistance() << " km" << std::endl;
+
+        // ✅ FIX: Check if trip has valid ID before adding cities
+        if (trip.getId() > 0) {
+            // Try to add cities to trip
+            try {
+                std::cout << "Adding " << cityRoute.size() << " cities to trip ID " << trip.getId() << std::endl;
+                for (size_t i = 0; i < cityRoute.size(); i++) {
+                    bool cityAdded = tripCityService.addCityToTrip(trip.getId(), cityRoute[i], i + 1);
+                    if (cityAdded) {
+                        std::cout << "✅ Added city " << cityRoute[i] << " at position " << (i + 1) << std::endl;
+                    } else {
+                        std::cout << "❌ Failed to add city " << cityRoute[i] << " at position " << (i + 1) << std::endl;
+                    }
+                }
+                std::cout << "Cities added to trip successfully" << std::endl;
+            } catch (const std::exception& e) {
+                std::cout << "Exception adding cities to trip: " << e.what() << std::endl;
+            }
+        } else {
+            std::cout << "❌ Trip ID is 0, cannot add cities" << std::endl;
+        }
+    } else {
+        std::cout << "Failed to save trip to database" << std::endl;
+    }
+
+    std::cout << "🔍 DEBUG: Returning trip with ID: " << trip.getId() << ", distance: " << trip.getTotalDistance() << " km" << std::endl;
+    return trip;
+}
+
+V<int> TripService::calculateOptimalRoute(int startCityId, const V<int>& citiesToVisit) {
+    V<int> route;
+    route.push_back(startCityId);
+
+    std::cout << "🔍 Calculating optimal route starting from city " << startCityId << std::endl;
+    std::cout << "   Cities to visit: ";
+    for (size_t i = 0; i < citiesToVisit.size(); i++) {
+        std::cout << citiesToVisit[i];
+        if (i < citiesToVisit.size() - 1) std::cout << ", ";
+    }
+    std::cout << std::endl;
+
+    // Simple route: just add cities in order (no distance optimization yet)
+    // TODO: Implement actual recursive closest-city algorithm
+    for (size_t i = 0; i < citiesToVisit.size(); i++) {
+        route.push_back(citiesToVisit[i]);
+    }
+
+    std::cout << "   Final route: ";
+    for (size_t i = 0; i < route.size(); i++) {
+        std::cout << route[i];
+        if (i < route.size() - 1) std::cout << " -> ";
+    }
+    std::cout << std::endl;
+
+    return route;
+}
+
+double TripService::calculateTotalDistance(const V<int>& cityRoute) {
+    std::cout << "🔍 Calculating total distance for route of " << cityRoute.size() << " cities" << std::endl;
+
+    // Simple distance calculation: 150km between each city
+    if (cityRoute.size() < 2) {
+        std::cout << "   Route too short, distance = 0 km" << std::endl;
+        return 0.0;
+    }
+
+    double distance = (cityRoute.size() - 1) * 150.0;
+    std::cout << "   Calculated distance: " << distance << " km (150km between each city)" << std::endl;
+
+    return distance;
+}
+

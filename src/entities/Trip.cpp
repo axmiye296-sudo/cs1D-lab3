@@ -1,5 +1,5 @@
 
-#include "../../include/entities/trip.hpp"
+#include "../../include/entities/Trip.hpp"
 
     // Constructors
 Trip::Trip() {}
