@@ -8,7 +8,7 @@
  * which represents the relationship between trips and cities with visit order.
  */
 
-#include "../../include/entities/tripCities.hpp"
+#include "../../include/entities/TripCity.hpp"
 
 // ============================================================================
 // CONSTRUCTORS

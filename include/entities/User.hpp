@@ -13,7 +13,7 @@ class User
 
     public:
         User();
-        User(std::string name, int id, std::string role);
+        User(std::string n, int i, std::string r);
 
         //Getters
         int getId() const;
@@ -22,7 +22,7 @@ class User
 
         //Setters
         void setId(int i); 
-        void setName(std::string s);
+        void setName(std::string n);
         void setRole(std::string r);
 
         //Validation

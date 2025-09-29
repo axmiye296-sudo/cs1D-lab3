@@ -3,7 +3,7 @@
 
 #include "../header.hpp"
 #include "../repositories/TripCityRepository.hpp"
-#include "../entities/tripCities.hpp"
+#include "../entities/TripCity.hpp"
 #include <iomanip>
 
 /**

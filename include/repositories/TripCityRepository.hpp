@@ -3,7 +3,7 @@
 
 #include "../header.hpp"
 #include "../databaseManager.hpp"
-#include "../entities/tripCities.hpp"
+#include "../entities/TripCity.hpp"
 
 /**
  * @class TripCityRepository

@@ -9,7 +9,7 @@
  * operations and query building for the trip_cities table.
  */
 
-#include "../include/repositories/TripCityRepository.hpp"
+#include "../../include/repositories/TripCityRepository.hpp"
 #include <iostream>
 
 /**
@@ -66,7 +66,6 @@ V<TripCity> TripCityRepository::findByTrip(int tripId) {
             }
         }
     }
-    
     return result;
 }
 

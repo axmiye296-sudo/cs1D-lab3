@@ -91,6 +91,21 @@ class V {
 			capacity_ = 0;
 		}
 
+		void insert(size_t pos, const T& value) {
+			if (pos > size_) throw std::out_of_range("Insert position out of range");
+			if (size_ == capacity_) {
+				size_t new_capacity = (capacity_ == 0) ? 1 : capacity_ * 2;
+				T* new_data = new T[new_capacity];
+				for (size_t i = 0; i < size_; ++i) new_data[i] = data[i];
+				delete[] data;
+				data = new_data;
+				capacity_ = new_capacity;
+			}
+			for (size_t i = size_; i > pos; --i) data[i] = data[i - 1];
+			data[pos] = value;
+			++size_;
+		}
+
 };
 
 #endif
