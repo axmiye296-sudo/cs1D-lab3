@@ -67,14 +67,16 @@
     bool equals(const Trip& other) const;
 
     // operations
-     void Trip::efficientTrip()
+     void Trip::efficientTrip(Trip& trip)
      {
-        std::cout << "The most effecient trip from" << start_city_id << " is to
-        travel to: ";
 
         int n = 0;
         if (numCities == n ) // basecase
         return;
+
+        if (numCities != n)
+        return efficientTrip()
+
 
         if ()
 

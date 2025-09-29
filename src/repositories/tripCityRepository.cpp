@@ -139,6 +139,7 @@ V<TripCity> TripCityRepository::findByCity(int cityId) {
     V<TripCity> result;
     std::string query = "SELECT id, trip_id, city_id, visit_order FROM trip_cities WHERE city_id = " + 
                        std::to_string(cityId) + " ORDER BY visit_order;";
+                       
     auto dbResult = db.executeSelect(query);
     
     if (!dbResult.empty()) {
