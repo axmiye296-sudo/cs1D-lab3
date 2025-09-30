@@ -8,6 +8,7 @@ a.out.dSYM/
 *.obj
 main
 api_server
+cs1d_lab3.db
 
 # Executable files
 *.exe

@@ -19,6 +19,10 @@
 #include "../include/repositories/CityRepository.hpp"
 #include "../include/repositories/FoodRepository.hpp"
 #include "../include/repositories/TripCityRepository.hpp"
+#include "../include/repositories/TripRepository.hpp"
+// Route registration headers (avoid redefining endpoints here)
+#include "../include/routes/cityRoutes.hpp"
+#include "../include/routes/tripRoutes.hpp"
 #include <json/json.h>
 
 /**
@@ -78,126 +82,23 @@ int main() {
     CityRepository cityRepo(database);
     FoodRepository foodRepo(database);
     TripCityRepository tripCityRepo(database);
+    TripRepository tripRepo(database);
     
     CityService cityService(cityRepo);
     FoodService foodService(foodRepo);
     TripCityService tripCityService(tripCityRepo);
+    TripService tripService(tripRepo, cityRepo, tripCityService, foodService);
 
     // Create Crow app
     crow::SimpleApp app;
 
+    // Reduce log verbosity (hide INFO logs shown like "Crow/master server is running...")
+    app.loglevel(crow::LogLevel::Warning);
+
     // Enable CORS for web frontend
-    // Note: compression may not be available in this Crow version
-
-    // Health check endpoint
-    CROW_ROUTE(app, "/health")
-    ([]{
-        Json::Value response;
-        response["status"] = "healthy";
-        response["message"] = "CS1D Lab 3 API Server is running";
-        response["timestamp"] = std::time(nullptr);
-        
-        Json::StreamWriterBuilder builder;
-        std::string jsonString = Json::writeString(builder, response);
-        
-        auto res = crow::response(200);
-        res.add_header("Content-Type", "application/json");
-        res.add_header("Access-Control-Allow-Origin", "*");
-        res.body = jsonString;
-        return res;
-    });
-
-    // Get all cities
-    CROW_ROUTE(app, "/api/cities").methods(crow::HTTPMethod::GET)
-    ([&cityService](const crow::request& req) {
-        try {
-            V<City> cities = cityService.getAllCities();
-            Json::Value response = citiesToJson(cities);
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, response);
-            
-            auto res = crow::response(200);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        } catch (const std::exception& e) {
-            Json::Value error;
-            error["error"] = e.what();
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, error);
-            
-            auto res = crow::response(500);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        }
-    });
-
-    // Get all foods
-    CROW_ROUTE(app, "/api/foods").methods(crow::HTTPMethod::GET)
-    ([&foodService](const crow::request& req) {
-        try {
-            V<Food> foods = foodService.getAllFoods();
-            Json::Value response = foodsToJson(foods);
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, response);
-            
-            auto res = crow::response(200);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        } catch (const std::exception& e) {
-            Json::Value error;
-            error["error"] = e.what();
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, error);
-            
-            auto res = crow::response(500);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        }
-    });
-
-    // Get foods for a specific city
-    CROW_ROUTE(app, "/api/cities/<int>/foods").methods(crow::HTTPMethod::GET)
-    ([&foodService](const crow::request& req, int cityId) {
-        try {
-            V<Food> foods = foodService.getFoodsByCityId(cityId);
-            Json::Value response = foodsToJson(foods);
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, response);
-            
-            auto res = crow::response(200);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        } catch (const std::exception& e) {
-            Json::Value error;
-            error["error"] = e.what();
-            
-            Json::StreamWriterBuilder builder;
-            std::string jsonString = Json::writeString(builder, error);
-            
-            auto res = crow::response(500);
-            res.add_header("Content-Type", "application/json");
-            res.add_header("Access-Control-Allow-Origin", "*");
-            res.body = jsonString;
-            return res;
-        }
-    });
-
-    // Get a specific city by ID
+    // Register modular route groups (adds /api/cities*, /api/trips/* endpoints)
+    registerCityRoutes(app, cityService, foodService);
+    registerTripRoutes(app, tripService, cityService, tripCityService);
     CROW_ROUTE(app, "/api/cities/<int>").methods(crow::HTTPMethod::GET)
     ([&cityService](const crow::request& req, int cityId) {
         try {
@@ -258,9 +159,13 @@ int main() {
     std::cout << "📚 Available endpoints:" << std::endl;
     std::cout << "  GET /health - Health check" << std::endl;
     std::cout << "  GET /api/cities - Get all cities" << std::endl;
-    std::cout << "  GET /api/cities/<id> - Get specific city" << std::endl;
-    std::cout << "  GET /api/foods - Get all foods" << std::endl;
-    std::cout << "  GET /api/cities/<id>/foods - Get foods for city" << std::endl;
+    std::cout << "  GET /api/cities/food - Get all cities with foods" << std::endl;
+    std::cout << "  GET /api/cities/<id>/food - Get foods for a city" << std::endl;
+    std::cout << "  GET /api/trips/paris - Generate Paris tour" << std::endl;
+    std::cout << "  GET /api/trips/london - Generate London tour" << std::endl;
+    std::cout << "  GET /api/trips/berlin - Generate Berlin tour" << std::endl;
+    std::cout << "  POST /api/trips/custom - Create custom trip" << std::endl;
+    std::cout << "  GET /api/trips/<id> - Get trip details" << std::endl;
     std::cout << "🛑 Press Ctrl+C to stop the server" << std::endl;
 
     // Run server on port 3001
