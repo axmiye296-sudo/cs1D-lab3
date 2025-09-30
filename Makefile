@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude
-API_CXXFLAGS = $(CXXFLAGS) -pthread
+API_CXXFLAGS = $(CXXFLAGS) -pthread -I/usr/include/jsoncpp
 
 # Directories
 SRC_DIR = src
@@ -38,6 +38,11 @@ $(API_TARGET): $(API_OBJS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Special rule for API server compilation with additional flags
+$(OBJ_DIR)/api_server.o: $(SRC_DIR)/api_server.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(API_CXXFLAGS) -c $< -o $@
 
 # Clean up generated files
 clean:

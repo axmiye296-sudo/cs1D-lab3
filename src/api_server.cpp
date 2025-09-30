@@ -87,7 +87,7 @@ int main() {
     crow::SimpleApp app;
 
     // Enable CORS for web frontend
-    app.use_compression(crow::compression::algorithm::GZIP);
+    // Note: compression may not be available in this Crow version
 
     // Health check endpoint
     CROW_ROUTE(app, "/health")
@@ -201,11 +201,20 @@ int main() {
     CROW_ROUTE(app, "/api/cities/<int>").methods(crow::HTTPMethod::GET)
     ([&cityService](const crow::request& req, int cityId) {
         try {
-            City city;
-            if (cityService.getCityById(cityId, city)) {
+            // Get city by ID - using getAllCities and filtering
+            V<City> allCities = cityService.getAllCities();
+            City* foundCity = nullptr;
+            for (auto& city : allCities) {
+                if (city.getId() == cityId) {
+                    foundCity = &city;
+                    break;
+                }
+            }
+            
+            if (foundCity) {
                 Json::Value response;
-                response["id"] = city.getId();
-                response["name"] = city.getName();
+                response["id"] = foundCity->getId();
+                response["name"] = foundCity->getName();
                 
                 Json::StreamWriterBuilder builder;
                 std::string jsonString = Json::writeString(builder, response);
@@ -245,7 +254,7 @@ int main() {
 
     // Start the server
     std::cout << "🚀 Starting CS1D Lab 3 API Server..." << std::endl;
-    std::cout << "🌐 Server running on http://localhost:8080" << std::endl;
+    std::cout << "🌐 Server running on http://localhost:3001" << std::endl;
     std::cout << "📚 Available endpoints:" << std::endl;
     std::cout << "  GET /health - Health check" << std::endl;
     std::cout << "  GET /api/cities - Get all cities" << std::endl;
@@ -254,8 +263,8 @@ int main() {
     std::cout << "  GET /api/cities/<id>/foods - Get foods for city" << std::endl;
     std::cout << "🛑 Press Ctrl+C to stop the server" << std::endl;
 
-    // Run server on port 8080
-    app.port(8080).multithreaded().run();
+    // Run server on port 3001
+    app.port(3001).multithreaded().run();
 
     // Cleanup
     database.disconnect();

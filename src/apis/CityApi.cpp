@@ -1,6 +1,6 @@
 #include <crow.h>
-#include "../routes/cityRoutes.cpp"
-#include "../routes/tripRoutes.cpp"  // ✅ Add this line
+#include "../../include/routes/cityRoutes.hpp"
+#include "../../include/routes/tripRoutes.hpp"
 #include "../../include/services/CityService.hpp"
 #include "../../include/services/FoodService.hpp"
 #include "../../include/services/TripService.hpp"  // ✅ Add this line

@@ -5,6 +5,7 @@
 #include "../../include/repositories/CityRepository.hpp"
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 // Constructor
 TripService::TripService(TripRepository& tripRepo, CityRepository& cityRepo,
