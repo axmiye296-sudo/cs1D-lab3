@@ -98,6 +98,7 @@ venv/
 # API executables
 api_server
 main
+admin_demo
 
 # Crow header file (if you downloaded it)
 include/crow.h
