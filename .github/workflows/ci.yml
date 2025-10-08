@@ -25,7 +25,8 @@ jobs:
           cd Crow
           mkdir build && cd build
           cmake .. -DCROW_BUILD_EXAMPLES=OFF -DCROW_BUILD_TESTS=OFF
-          make install
+          make
+          sudo make install
 
       - name: Build backend
         working-directory: backend
@@ -36,3 +37,4 @@ jobs:
         with:
           name: api_server
           path: backend/api_server
+
