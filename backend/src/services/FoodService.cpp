@@ -1,5 +1,5 @@
-#include "../../include/services/foodService.hpp"
-#include "../../include/repositories/foodRepository.hpp"
+#include "../../include/services/FoodService.hpp"
+#include "../../include/repositories/FoodRepository.hpp"
 #include <iostream>
 
 FoodService::FoodService(FoodRepository& foodRepo) : foodRepo(foodRepo) {
