@@ -17,7 +17,7 @@ void startApiServer() {
     crow::SimpleApp app;
 
     // Initialize database using singleton pattern
-    DatabaseManager& database = DatabaseManager::getInstance();  // ✅ FIXED: Use singleton
+    DatabaseManager& database = DatabaseManager::getInstance();
 
     // Connect to database./m
 
@@ -31,13 +31,13 @@ void startApiServer() {
     FoodRepository foodRepo(database);
     TripRepository tripRepo(database);
     TripCityRepository tripCityRepo(database);
-    CityDistanceRepository cityDistanceRepo(database);  // ✅ ADD THIS LINE
+    CityDistanceRepository cityDistanceRepo(database);
 
     // Initialize services
     CityService cityService(cityRepo);
     FoodService foodService(foodRepo);
     TripCityService tripCityService(tripCityRepo);
-    TripService tripService(tripRepo, cityDistanceRepo, tripCityService);  // ✅ FIXED: Updated constructor
+    TripService tripService(tripRepo, cityDistanceRepo, tripCityService);
 
     // Register all routes
     registerCityRoutes(app, cityService, foodService, cityDistanceRepo);
@@ -61,7 +61,7 @@ void startApiServer() {
     std::cout << "  GET /api/trips/custom - Plan custom tour" << std::endl;
     std::cout << "  GET /api/trips/berlin - Plan Berlin tour" << std::endl;
     std::cout << "  GET /api/trips/{id} - Get trip by ID" << std::endl;
-    std::cout << "🌐 Server running on http://localhost:18080" << std::endl;
+    std::cout << "🌐 Server running on http://localhost:3001" << std::endl;
 
     app.port(3001).run();
 }

@@ -78,7 +78,6 @@ void TripService::CreateShortestTrip(Trip& trip, int startCityId) {
     CreateShortestTrip(trip, nextCityId);
 }
 
-// Add this overloaded method
 void TripService::CreateShortestTrip(Trip& trip, int startCityId, const V<int>& allowedCities) {
     std::cout << "\n CreateShortestTrip called with startCityId: " << startCityId << std::endl;
     
@@ -88,8 +87,7 @@ void TripService::CreateShortestTrip(Trip& trip, int startCityId, const V<int>& 
     std::cout << "   Current trip size: " << currentTripSize << std::endl;
     std::cout << "   Target cities: " << targetCities << std::endl;
     std::cout << "   Allowed cities count: " << allowedCities.size() << std::endl;
-    
-    // ✅ FIXED: Use dynamic limit based on allowed cities, not hardcoded 11
+
     if (currentTripSize >= targetCities) {
         std::cout << "✅ Trip complete! Visited all " << targetCities << " cities." << std::endl;
         return;
