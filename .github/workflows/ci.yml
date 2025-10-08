@@ -1,4 +1,4 @@
-game: Build C++ Backend
+name: Build C++ Backend
 
 on:
   push:
