@@ -17,8 +17,15 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang make libboost-all-dev libsqlite3-dev
-          # No need to install Crow - it's included in the repo
+          sudo apt-get install -y clang make libboost-all-dev libsqlite3-dev cmake
+          # Install ASIO (required by Crow)
+          sudo apt-get install -y libasio-dev
+          # Install Crow framework
+          git clone https://github.com/CrowCpp/Crow.git
+          cd Crow
+          mkdir build && cd build
+          cmake .. -DCROW_BUILD_EXAMPLES=OFF -DCROW_BUILD_TESTS=OFF
+          make install
 
       - name: Build backend
         working-directory: backend
