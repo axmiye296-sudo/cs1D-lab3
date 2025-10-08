@@ -55,6 +55,15 @@ api: $(API_TARGET)
 run-api: $(API_TARGET)
 	./$(API_TARGET)
 
+# Admin demo source files
+ADMIN_SRCS = $(shell find $(SRC_DIR) -name "*.cpp" ! -name "main.cpp" ! -name "test_*.cpp" ! -name "api_server.cpp") $(SRC_DIR)/admin_demo.cpp
+ADMIN_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(ADMIN_SRCS))
+
+# Build and run admin demo
+admin: $(ADMIN_OBJS)
+	$(CXX) $(CXXFLAGS) -o admin_demo $^ -lsqlite3
+	./admin_demo
+
 # Build test executable
 test: $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o test_tripCity $^ -lsqlite3
@@ -69,4 +78,4 @@ debug: CXXFLAGS += -g -DDEBUG
 debug: $(TARGET)
 
 # Phony targets
-.PHONY: all clean run debug test api run-api
+.PHONY: all clean run debug test api run-api admin
