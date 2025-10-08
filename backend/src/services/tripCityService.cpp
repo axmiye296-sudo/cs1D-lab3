@@ -8,7 +8,7 @@
  * between trips and cities, including adding, removing, and updating cities in trips.
  */
 
-#include "../include/services/tripCityService.hpp"
+#include "../../include/services/tripCityService.hpp"
 #include <iostream>
 #include <iomanip> // Required for std::setw
 
