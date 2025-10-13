@@ -23,6 +23,7 @@ CITY_SRC = src/entities/City.cpp
 FOOD_SRC = src/entities/Food.cpp
 TRIP_SRC = src/entities/Trip.cpp
 CITY_DISTANCE_SRC = src/entities/CityDistance.cpp
+ADMIN_SRC = src/entities/Admin.cpp
 
 # Repository source files
 TRIPCITY_REPO_SRC = src/repositories/tripCityRepository.cpp
@@ -36,11 +37,13 @@ TRIPCITY_SERVICE_SRC = src/services/tripCityService.cpp
 CITY_SERVICE_SRC = src/services/CityService.cpp
 FOOD_SERVICE_SRC = src/services/FoodService.cpp
 TRIP_SERVICE_SRC = src/services/TripService.cpp
+ADMIN_SERVICE_SRC = src/services/AdminService.cpp
 
 # API files
 API_SRC = src/apis/CityApi.cpp
 CITY_ROUTES_SRC = src/routes/cityRoutes.cpp
 TRIP_ROUTES_SRC = src/routes/tripRoutes.cpp
+ADMIN_ROUTES_SRC = src/routes/adminRoutes.cpp
 
 # Object files
 DATABASE_OBJ = $(BUILD_DIR)/databaseManager.o
@@ -51,6 +54,7 @@ CITY_OBJ = $(BUILD_DIR)/City.o
 FOOD_OBJ = $(BUILD_DIR)/Food.o
 TRIP_OBJ = $(BUILD_DIR)/Trip.o
 CITY_DISTANCE_OBJ = $(BUILD_DIR)/CityDistance.o
+ADMIN_OBJ = $(BUILD_DIR)/Admin.o
 
 # Repository object files
 TRIPCITY_REPO_OBJ = $(BUILD_DIR)/tripCityRepository.o
@@ -64,11 +68,13 @@ TRIPCITY_SERVICE_OBJ = $(BUILD_DIR)/tripCityService.o
 CITY_SERVICE_OBJ = $(BUILD_DIR)/CityService.o
 FOOD_SERVICE_OBJ = $(BUILD_DIR)/FoodService.o
 TRIP_SERVICE_OBJ = $(BUILD_DIR)/TripService.o
+ADMIN_SERVICE_OBJ = $(BUILD_DIR)/AdminService.o
 
 # API object files
 API_OBJ = $(BUILD_DIR)/CityApi.o
 CITY_ROUTES_OBJ = $(BUILD_DIR)/cityRoutes.o
 TRIP_ROUTES_OBJ = $(BUILD_DIR)/tripRoutes.o
+ADMIN_ROUTES_OBJ = $(BUILD_DIR)/adminRoutes.o
 
 # API server executable
 API_EXECUTABLE = api_server
@@ -78,8 +84,8 @@ API_OBJS = $(API_OBJ) $(CITY_ROUTES_OBJ) $(TRIP_ROUTES_OBJ) $(DATABASE_OBJ) \
            $(CITY_OBJ) $(FOOD_OBJ) $(TRIP_OBJ) $(CITY_DISTANCE_OBJ) \
            $(CITY_REPO_OBJ) $(FOOD_REPO_OBJ) $(TRIP_REPO_OBJ) $(CITY_DISTANCE_REPO_OBJ) \
            $(CITY_SERVICE_OBJ) $(FOOD_SERVICE_OBJ) $(TRIP_SERVICE_OBJ) \
-           $(TRIPCITY_REPO_OBJ) $(TRIPCITY_SERVICE_OBJ) $(TRIPCITY_OBJ)
-
+           $(TRIPCITY_REPO_OBJ) $(TRIPCITY_SERVICE_OBJ) $(TRIPCITY_OBJ) $(ADMIN_OBJ) \
+		   $(ADMIN_SERVICE_OBJ) $(ADMIN_ROUTES_OBJ)
 # Default target - Build API server
 all: $(API_EXECUTABLE)
 	@echo "🚀 API Server build completed successfully"
@@ -115,6 +121,9 @@ $(TRIP_OBJ): $(TRIP_SRC) include/entities/Trip.hpp $(BUILD_DIR)
 $(CITY_DISTANCE_OBJ): $(CITY_DISTANCE_SRC) include/entities/CityDistance.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(CITY_DISTANCE_SRC) -o $(CITY_DISTANCE_OBJ)
 
+$(ADMIN_OBJ): $(ADMIN_SRC) include/entities/Admin.hpp $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(ADMIN_SRC) -o $(ADMIN_OBJ)
+
 # ============================================================================
 # REPOSITORY BUILD RULES
 # ============================================================================
@@ -148,6 +157,9 @@ $(FOOD_SERVICE_OBJ): $(FOOD_SERVICE_SRC) include/services/FoodService.hpp $(BUIL
 $(TRIP_SERVICE_OBJ): $(TRIP_SERVICE_SRC) include/services/TripService.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(TRIP_SERVICE_SRC) -o $(TRIP_SERVICE_OBJ)
 
+$(ADMIN_SERVICE_OBJ): $(ADMIN_SERVICE_SRC) include/services/AdminService.hpp $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(ADMIN_SERVICE_SRC) -o $(ADMIN_SERVICE_OBJ)
+
 # ============================================================================
 # API BUILD RULES
 # ============================================================================
@@ -159,6 +171,9 @@ $(CITY_ROUTES_OBJ): $(CITY_ROUTES_SRC) include/entities/City.hpp $(BUILD_DIR)
 
 $(TRIP_ROUTES_OBJ): $(TRIP_ROUTES_SRC) include/entities/Trip.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(TRIP_ROUTES_SRC) -o $(TRIP_ROUTES_OBJ)
+
+$(ADMIN_ROUTES_OBJ): $(ADMIN_ROUTES_SRC) include/crow.h include/entities/Admin.hpp $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(ADMIN_ROUTES_SRC) -o $(ADMIN_ROUTES_OBJ)
 
 # ============================================================================
 # RUN TARGETS

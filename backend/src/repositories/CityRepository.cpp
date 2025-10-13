@@ -59,3 +59,55 @@ City CityRepository::mapRowToEntity(const std::vector<std::string>& row) {
 
     return city;
 }
+
+// Insert new city into database
+bool CityRepository::insert(const City& city) {
+    try {
+        std::string query = "INSERT INTO cities (name) VALUES ('" + city.getName() + "');";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error inserting city: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Update existing city in database
+bool CityRepository::update(const City& city) {
+    try {
+        std::string query = "UPDATE cities SET name = '" + city.getName() + 
+                           "' WHERE id = " + std::to_string(city.getId()) + ";";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error updating city: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Delete city from database
+bool CityRepository::deleteById(int cityId) {
+    try {
+        std::string query = "DELETE FROM cities WHERE id = " + std::to_string(cityId) + ";";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error deleting city: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Find specific city by ID
+City* CityRepository::findById(int cityId) {
+    try {
+        std::string query = "SELECT id, name FROM cities WHERE id = " + std::to_string(cityId) + ";";
+        auto dbResult = database.executeSelect(query);
+        
+        if (!dbResult.empty()) {
+            City* city = new City();
+            *city = mapRowToEntity(dbResult[0]);
+            return city;
+        }
+        return nullptr;
+    } catch (const std::exception& e) {
+        std::cerr << "Error finding city: " << e.what() << std::endl;
+        return nullptr;
+    }
+}
