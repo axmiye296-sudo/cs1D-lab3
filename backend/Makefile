@@ -172,7 +172,7 @@ $(CITY_ROUTES_OBJ): $(CITY_ROUTES_SRC) include/entities/City.hpp $(BUILD_DIR)
 $(TRIP_ROUTES_OBJ): $(TRIP_ROUTES_SRC) include/entities/Trip.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(TRIP_ROUTES_SRC) -o $(TRIP_ROUTES_OBJ)
 
-$(ADMIN_ROUTES_OBJ): $(ADMIN_ROUTES_SRC) include/crow.h include/entities/Admin.hpp $(BUILD_DIR)
+$(ADMIN_ROUTES_OBJ): $(ADMIN_ROUTES_SRC) include/entities/Admin.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(ADMIN_ROUTES_SRC) -o $(ADMIN_ROUTES_OBJ)
 
 # ============================================================================
@@ -210,6 +210,30 @@ status:
 	@echo "Entities: Trip, City, Food, TripCity, CityDistance"
 	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
 	@echo "Services: Trip, City, Food, TripCity"
+	@echo "Routes: City, Trip"
+	@echo "Build directory: $(BUILD_DIR)"
+	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
+
+.PHONY: all clean run test-db debug release statuses: Trip, City, Food, TripCity, CityDistance"
+	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
+	@echo "Services: Trip, City, Food, TripCity"
+	@echo "Routes: City, Trip"
+	@echo "Build directory: $(BUILD_DIR)"
+	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
+
+"Services: Trip, City, Food, TripCity"
+	@echo "Routes: City, Trip"
+	@echo "Build directory: $(BUILD_DIR)"
+	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
+
+.PHONY: all clean run test-db debug release statuses: Trip, City, Food, TripCity, CityDistance"
+	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
+	@echo "Services: Trip, City, Food, TripCity"
+	@echo "Routes: City, Trip"
+	@echo "Build directory: $(BUILD_DIR)"
+	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
+
+"Services: Trip, City, Food, TripCity"
 	@echo "Routes: City, Trip"
 	@echo "Build directory: $(BUILD_DIR)"
 	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
