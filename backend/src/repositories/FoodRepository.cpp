@@ -96,4 +96,62 @@ Food FoodRepository::mapRowToEntity(const std::vector<std::string>& row) {
                                         // setPrice() stores the price in our Food object
 
     return food;  // Return the populated Food object
+
+    }
+
+// Insert new food into database
+bool FoodRepository::insert(const Food& food) {
+    try {
+        std::string query = "INSERT INTO foods (name, city_id, price) VALUES ('" + 
+                           food.getName() + "', " + 
+                           std::to_string(food.getCityId()) + ", " + 
+                           std::to_string(food.getPrice()) + ");";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error inserting food: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Update existing food in database
+bool FoodRepository::update(const Food& food) {
+    try {
+        std::string query = "UPDATE foods SET name = '" + food.getName() + 
+                           "', city_id = " + std::to_string(food.getCityId()) + 
+                           ", price = " + std::to_string(food.getPrice()) + 
+                           " WHERE id = " + std::to_string(food.getId()) + ";";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error updating food: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Delete food from database
+bool FoodRepository::deleteById(int foodId) {
+    try {
+        std::string query = "DELETE FROM foods WHERE id = " + std::to_string(foodId) + ";";
+        return database.executeUpdate(query);
+    } catch (const std::exception& e) {
+        std::cerr << "Error deleting food: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Find specific food by ID
+Food* FoodRepository::findById(int foodId) {
+    try {
+        std::string query = "SELECT id, name, city_id, price FROM foods WHERE id = " + std::to_string(foodId) + ";";
+        auto dbResult = database.executeSelect(query);
+        
+        if (!dbResult.empty()) {
+            Food* food = new Food();
+            *food = mapRowToEntity(dbResult[0]);
+            return food;
+        }
+        return nullptr;
+    } catch (const std::exception& e) {
+        std::cerr << "Error finding food: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
