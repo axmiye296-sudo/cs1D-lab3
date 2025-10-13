@@ -1,12 +1,12 @@
 # API-Only SQLite Database Makefile
 # Builds the API server application only
 
-CC = clang++
+CC = g++
 CFLAGS = -Wall -Wextra -std=c++17 -g
 
-# Add Boost and Crow include paths
-CFLAGS += -I/usr/local/include -I/opt/homebrew/include -Iinclude
-LDFLAGS = -L/usr/local/lib -L/opt/homebrew/lib
+# Add Boost and Crow include paths (WSL/Ubuntu)
+CFLAGS += -I/usr/local/include -I/usr/include -Iinclude
+LDFLAGS = -L/usr/local/lib -L/usr/lib
 
 # Link Boost libraries that Crow needs
 LIBS = -lboost_thread -lboost_chrono -lpthread -lsqlite3
@@ -151,13 +151,13 @@ $(TRIP_SERVICE_OBJ): $(TRIP_SERVICE_SRC) include/services/TripService.hpp $(BUIL
 # ============================================================================
 # API BUILD RULES
 # ============================================================================
-$(API_OBJ): $(API_SRC) include/crow.h $(BUILD_DIR)
+$(API_OBJ): $(API_SRC) $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(API_SRC) -o $(API_OBJ)
 
-$(CITY_ROUTES_OBJ): $(CITY_ROUTES_SRC) include/crow.h include/entities/City.hpp $(BUILD_DIR)
+$(CITY_ROUTES_OBJ): $(CITY_ROUTES_SRC) include/entities/City.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(CITY_ROUTES_SRC) -o $(CITY_ROUTES_OBJ)
 
-$(TRIP_ROUTES_OBJ): $(TRIP_ROUTES_SRC) include/crow.h include/entities/Trip.hpp $(BUILD_DIR)
+$(TRIP_ROUTES_OBJ): $(TRIP_ROUTES_SRC) include/entities/Trip.hpp $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(TRIP_ROUTES_SRC) -o $(TRIP_ROUTES_OBJ)
 
 # ============================================================================
