@@ -7,12 +7,14 @@
 #include "../repositories/TripRepository.hpp"
 #include "../repositories/CityDistanceRepository.hpp"
 #include "../services/tripCityService.hpp"
+class CityService;
 
 class TripService {
 private:
     TripRepository& tripRepo;
     CityDistanceRepository& cityDistanceRepo;
     TripCityService& tripCityService;
+    CityService& cityService;
 
     // Helper methods moved from Trip entity
     bool hasCity(const Trip& trip, int cityId);
@@ -26,7 +28,7 @@ private:
     int findNearestUnvisitedCityFromList(Trip& trip, int fromCityId, const V<int>& allowedCities);
 
 public:
-    TripService(TripRepository& tripRepository, CityDistanceRepository& cityDistanceRepo, TripCityService& tripCityService);
+    TripService(TripRepository& tripRepository, CityDistanceRepository& cityDistanceRepo, TripCityService& tripCityService, CityService& cityService);
     
     // Main trip planning methods
     Trip planParisTour();

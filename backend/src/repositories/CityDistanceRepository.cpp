@@ -64,5 +64,30 @@ CityDistance CityDistanceRepository::mapRowToEntity(const std::vector<std::strin
     return CityDistance(fromCityId, toCityId, distance);
 }
 
+bool CityDistanceRepository::save(const CityDistance& cityDistance) {
+    // Check if distance already exists
+    int existingDistance = getDistance(cityDistance.getFromCityId(), cityDistance.getToCityId());
+    
+    if (existingDistance != -1) {
+        // Update existing distance
+        std::string updateQuery = "UPDATE city_distances SET distance = " + 
+                                std::to_string(cityDistance.getDistance()) + 
+                                " WHERE from_city_id = " + std::to_string(cityDistance.getFromCityId()) + 
+                                " AND to_city_id = " + std::to_string(cityDistance.getToCityId()) + ";";
+        
+        std::cout << "🔄 Updating existing distance: " << updateQuery << std::endl;
+        return database.executeInsert(updateQuery);
+    } else {
+        // Insert new distance
+        std::string insertQuery = "INSERT INTO city_distances (from_city_id, to_city_id, distance) VALUES (" +
+                                std::to_string(cityDistance.getFromCityId()) + ", " +
+                                std::to_string(cityDistance.getToCityId()) + ", " +
+                                std::to_string(cityDistance.getDistance()) + ");";
+        
+        std::cout << "➕ Inserting new distance: " << insertQuery << std::endl;
+        return database.executeInsert(insertQuery);
+    }
+}
+
 
 

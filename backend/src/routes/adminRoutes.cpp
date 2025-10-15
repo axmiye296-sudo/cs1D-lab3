@@ -285,4 +285,71 @@ void registerAdminRoutes(crow::SimpleApp& app, AdminService& adminService) {
         res.write(result.dump());
         res.end();
     });
+
+    // POST /api/admin/upload-city
+    CROW_ROUTE(app, "/api/admin/upload-city").methods("POST"_method)
+    ([&adminService](const crow::request& req, crow::response& res) {
+        ADMIN_AUTH_CHECK(adminService, res);
+
+        // Check if request has multipart data
+        crow::multipart::message msg(req);
+        
+        // Find the uploaded file using the part_map
+        auto it = msg.part_map.find("cityData");
+        if (it == msg.part_map.end()) {
+            crow::json::wvalue error;
+            error["error"] = "No file uploaded. Please upload a file with name 'cityData'";
+            res.code = 400;
+            res.write(error.dump());
+            res.end();
+            return;
+        }
+
+        // Get file content
+        std::string fileContent = it->second.body;
+        if (fileContent.empty()) {
+            crow::json::wvalue error;
+            error["error"] = "Uploaded file is empty";
+            res.code = 400;
+            res.write(error.dump());
+            res.end();
+            return;
+        }
+
+        // Process the file content
+        try {
+            bool success = false;
+            
+            // Detect file format (JSON vs text)
+            std::string trimmedContent = fileContent;
+            trimmedContent.erase(0, trimmedContent.find_first_not_of(" \t\r\n"));
+            
+            if (trimmedContent[0] == '{' || trimmedContent[0] == '[') {
+                // JSON format - process multiple cities
+                std::cout << "🔍 Detected JSON format, processing multiple cities..." << std::endl;
+                success = adminService.processCitiesJsonFile(fileContent);
+            } else {
+                // Text format - process single city (legacy support)
+                std::cout << "🔍 Detected text format, processing single city..." << std::endl;
+                success = adminService.processCityDataFile(fileContent);
+            }
+            
+            crow::json::wvalue result;
+            if (success) {
+                result["message"] = "City data uploaded and processed successfully";
+                res.code = 201;
+            } else {
+                result["error"] = "Failed to process city data file";
+                res.code = 500;
+            }
+            res.write(result.dump());
+            res.end();
+        } catch (const std::exception& e) {
+            crow::json::wvalue error;
+            error["error"] = std::string("Error processing file: ") + e.what();
+            res.code = 500;
+            res.write(error.dump());
+            res.end();
+        }
+    });
 }

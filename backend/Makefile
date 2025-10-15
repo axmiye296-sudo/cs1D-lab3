@@ -180,7 +180,7 @@ $(ADMIN_ROUTES_OBJ): $(ADMIN_ROUTES_SRC) include/entities/Admin.hpp $(BUILD_DIR)
 # ============================================================================
 # Run API server
 run: $(API_EXECUTABLE)
-	@echo "🚀 Starting API server on http://localhost:18080"
+	@echo "🚀 Starting API server on http://localhost:3001"
 	./$(API_EXECUTABLE)
 
 # ============================================================================
@@ -210,30 +210,6 @@ status:
 	@echo "Entities: Trip, City, Food, TripCity, CityDistance"
 	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
 	@echo "Services: Trip, City, Food, TripCity"
-	@echo "Routes: City, Trip"
-	@echo "Build directory: $(BUILD_DIR)"
-	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
-
-.PHONY: all clean run test-db debug release statuses: Trip, City, Food, TripCity, CityDistance"
-	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
-	@echo "Services: Trip, City, Food, TripCity"
-	@echo "Routes: City, Trip"
-	@echo "Build directory: $(BUILD_DIR)"
-	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
-
-"Services: Trip, City, Food, TripCity"
-	@echo "Routes: City, Trip"
-	@echo "Build directory: $(BUILD_DIR)"
-	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
-
-.PHONY: all clean run test-db debug release statuses: Trip, City, Food, TripCity, CityDistance"
-	@echo "Repositories: Trip, City, Food, TripCity, CityDistance"
-	@echo "Services: Trip, City, Food, TripCity"
-	@echo "Routes: City, Trip"
-	@echo "Build directory: $(BUILD_DIR)"
-	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"
-
-"Services: Trip, City, Food, TripCity"
 	@echo "Routes: City, Trip"
 	@echo "Build directory: $(BUILD_DIR)"
 	@ls -la $(BUILD_DIR) 2>/dev/null || echo "Build directory not found - run 'make' first"

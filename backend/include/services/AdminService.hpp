@@ -10,8 +10,10 @@
 #include "../entities/Admin.hpp"
 #include "../entities/City.hpp"
 #include "../entities/Food.hpp"
+#include "../entities/CityDistance.hpp"
 #include "../repositories/CityRepository.hpp"
 #include "../repositories/FoodRepository.hpp"
+#include "../repositories/CityDistanceRepository.hpp"
 #include <vector>
 
 class AdminService {
@@ -19,10 +21,11 @@ private:
     Admin currentAdmin;
     CityRepository& cityRepo;
     FoodRepository& foodRepo;
+    CityDistanceRepository& cityDistanceRepo;
 
 public:
     // Constructor
-    AdminService(CityRepository& cityRepo, FoodRepository& foodRepo);
+    AdminService(CityRepository& cityRepo, FoodRepository& foodRepo, CityDistanceRepository& cityDistanceRepo);
 
     // Admin login/logout
     bool loginAdmin(const std::string& username, const std::string& password);
@@ -47,6 +50,12 @@ public:
     V<City> getAllCities();
     V<Food> getAllFoods();
     
+    // File upload and processing functions
+    bool processCityDataFile(const std::string& fileContent);
+    bool processCitiesJsonFile(const std::string& jsonContent);
+    bool addCityFromFileData(const std::string& cityName, 
+                           const std::vector<std::pair<std::string, double>>& foods,
+                           const std::vector<std::pair<std::string, int>>& distances);
 
     // Helper function to check admin permissions
     bool checkAdminPermission() const;
