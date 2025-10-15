@@ -1,51 +1,47 @@
 {
   "cities": [
     {
-      "name": "Tokyo",
+      "name": "Stockholm",
       "foods": [
-        {"name": "Sushi", "price": 25.50},
-        {"name": "Ramen", "price": 12.00},
-        {"name": "Tempura", "price": 18.75},
-        {"name": "Yakitori", "price": 15.30}
+        { "name": "Raggmunk", "price": 6.75 },
+        { "name": "Gravad lax", "price": 13.76 },
+        { "name": "husmanskost", "price": 7.98 }
       ],
       "distances": [
-        {"to": "London", "distance": 9500},
-        {"to": "Paris", "distance": 9700},
-        {"to": "Berlin", "distance": 8900},
-        {"to": "Madrid", "distance": 11200},
-        {"to": "Rome", "distance": 10100}
+        { "to": "Amsterdam", "distance": 1435 },
+        { "to": "Berlin", "distance": 1084 },
+        { "to": "Brussels", "distance": 1564 },
+        { "to": "Budapest", "distance": 1951 },
+        { "to": "Hamburg", "distance": 1079 },
+        { "to": "Lisbon", "distance": 3610 },
+        { "to": "London", "distance": 1902 },
+        { "to": "Madrid", "distance": 3141 },
+        { "to": "Paris", "distance": 1885 },
+        { "to": "Prague", "distance": 1428 },
+        { "to": "Rome", "distance": 2546 },
+        { "to": "Vienna", "distance": 1758 }
       ]
     },
     {
-      "name": "Sydney",
+      "name": "Vienna",
       "foods": [
-        {"name": "Meat Pie", "price": 8.50},
-        {"name": "Fish and Chips", "price": 15.00},
-        {"name": "Lamington", "price": 6.25},
-        {"name": "Barramundi", "price": 28.00}
+        { "name": "Wiener Schnitzel", "price": 4.94 },
+        { "name": "Kaiserschmarrn", "price": 7.53 },
+        { "name": "Sachertorte", "price": 5.85 }
       ],
       "distances": [
-        {"to": "Tokyo", "distance": 7800},
-        {"to": "London", "distance": 17000},
-        {"to": "Paris", "distance": 17100},
-        {"to": "Berlin", "distance": 16200},
-        {"to": "Rome", "distance": 16500}
-      ]
-    },
-    {
-      "name": "Cairo",
-      "foods": [
-        {"name": "Koshari", "price": 4.50},
-        {"name": "Ful Medames", "price": 3.25},
-        {"name": "Molokhia", "price": 7.00},
-        {"name": "Mahshi", "price": 9.50}
-      ],
-      "distances": [
-        {"to": "London", "distance": 3500},
-        {"to": "Paris", "distance": 3200},
-        {"to": "Berlin", "distance": 2600},
-        {"to": "Rome", "distance": 2100},
-        {"to": "Madrid", "distance": 3400}
+        { "to": "Amsterdam", "distance": 1147 },
+        { "to": "Berlin", "distance": 640 },
+        { "to": "Brussels", "distance": 1104 },
+        { "to": "Budapest", "distance": 243 },
+        { "to": "Hamburg", "distance": 930 },
+        { "to": "Lisbon", "distance": 2867 },
+        { "to": "London", "distance": 1461 },
+        { "to": "Madrid", "distance": 2401 },
+        { "to": "Paris", "distance": 1236 },
+        { "to": "Prague", "distance": 331 },
+        { "to": "Rome", "distance": 1120 },
+        { "to": "Stockholm", "distance": 1758 }
       ]
     }
   ]
