@@ -141,10 +141,20 @@ bool AdminService::addFoodToCity(int cityId, const std::string& foodName, double
         return false;
     }
     
-    // Get all foods and find the smallest available ID
+    // Get all foods and check if this food already exists for this city
     V<Food> allFoods = foodRepo.findAll();
     
-    // Create a set of existing food IDs
+    // Check for duplicate food (same name and city)
+    for (const auto& food : allFoods) {
+        if (food.getCityId() == cityId && food.getName() == foodName) {
+            std::cout << "⚠️  Food '" << foodName << "' already exists for " << existingCity->getName() 
+                      << " (ID: " << food.getId() << "), skipping duplicate." << std::endl;
+            delete existingCity;
+            return true; // Return true since the food exists (not an error)
+        }
+    }
+    
+    // Create a set of existing food IDs to find smallest available ID
     std::set<int> existingIds;
     for (const auto& food : allFoods) {
         existingIds.insert(food.getId());
@@ -517,7 +527,8 @@ bool AdminService::processCitiesJsonFile(const std::string& jsonContent) {
         
         std::cout << "🏙️  Found " << totalCities << " cities to process..." << std::endl;
         
-        // Process each city
+        // PASS 1: Add all cities and their foods (skip distances for now)
+        std::cout << "\n📍 PASS 1: Creating cities and adding foods..." << std::endl;
         for (const auto& cityJson : citiesArray) {
             if (!cityJson.has("name")) {
                 std::cout << "⚠️  Warning: Skipping city without name" << std::endl;
@@ -526,9 +537,8 @@ bool AdminService::processCitiesJsonFile(const std::string& jsonContent) {
             
             std::string cityName = cityJson["name"].s();
             std::vector<std::pair<std::string, double>> foods;
-            std::vector<std::pair<std::string, int>> distances;
             
-            // Parse foods
+            // Parse foods only
             if (cityJson.has("foods") && cityJson["foods"].t() == crow::json::type::List) {
                 for (const auto& foodJson : cityJson["foods"]) {
                     if (foodJson.has("name") && foodJson.has("price")) {
@@ -539,27 +549,82 @@ bool AdminService::processCitiesJsonFile(const std::string& jsonContent) {
                 }
             }
             
-            // Parse distances
+            // Add the city with foods only (no distances yet)
+            std::vector<std::pair<std::string, int>> emptyDistances;
+            if (addCityFromFileData(cityName, foods, emptyDistances)) {
+                successCount++;
+                std::cout << "✅ Successfully created city: " << cityName << std::endl;
+            } else {
+                std::cout << "❌ Failed to create city: " << cityName << std::endl;
+            }
+        }
+        
+        // PASS 2: Add all distances now that all cities exist
+        std::cout << "\n🛣️  PASS 2: Adding distances between cities..." << std::endl;
+        int distanceCount = 0;
+        for (const auto& cityJson : citiesArray) {
+            if (!cityJson.has("name")) {
+                continue;
+            }
+            
+            std::string cityName = cityJson["name"].s();
+            
+            // Find the city ID
+            V<City> allCities = cityRepo.findAll();
+            int cityId = -1;
+            for (const auto& city : allCities) {
+                if (city.getName() == cityName) {
+                    cityId = city.getId();
+                    break;
+                }
+            }
+            
+            if (cityId == -1) {
+                std::cout << "⚠️  Warning: Could not find city " << cityName << " for distance processing" << std::endl;
+                continue;
+            }
+            
+            // Parse and add distances
             if (cityJson.has("distances") && cityJson["distances"].t() == crow::json::type::List) {
                 for (const auto& distJson : cityJson["distances"]) {
                     if (distJson.has("to") && distJson.has("distance")) {
                         std::string toCity = distJson["to"].s();
                         int distance = distJson["distance"].i();
-                        distances.push_back({toCity, distance});
+                        
+                        // Find the destination city ID
+                        int toCityId = -1;
+                        for (const auto& city : allCities) {
+                            if (city.getName() == toCity) {
+                                toCityId = city.getId();
+                                break;
+                            }
+                        }
+                        if (toCityId != -1) {
+                            // Insert both directions: (from -> to) and (to -> from)
+                            CityDistance cityDistance(cityId, toCityId, distance);
+                            if (cityDistanceRepo.save(cityDistance)) {
+                                distanceCount++;
+                                std::cout << "✅ " << cityName << " → " << toCity << ": " << distance << "km" << std::endl;
+                            }
+                            // Check if reverse distance already exists, if not, insert it
+                            int reverseDistance = cityDistanceRepo.getDistance(toCityId, cityId);
+                            if (reverseDistance == -1) {
+                                CityDistance reverseCityDistance(toCityId, cityId, distance);
+                                if (cityDistanceRepo.save(reverseCityDistance)) {
+                                    distanceCount++;
+                                    std::cout << "✅ " << toCity << " → " << cityName << ": " << distance << "km (reverse)" << std::endl;
+                                }
+                            }
+                        } else {
+                            std::cout << "⚠️  Warning: Destination city '" << toCity << "' not found for distance from " << cityName << std::endl;
+                        }
                     }
                 }
             }
-            
-            // Add the city with all its data
-            if (addCityFromFileData(cityName, foods, distances)) {
-                successCount++;
-                std::cout << "✅ Successfully processed city: " << cityName << std::endl;
-            } else {
-                std::cout << "❌ Failed to process city: " << cityName << std::endl;
-            }
         }
         
-        std::cout << "🎉 Processed " << successCount << "/" << totalCities << " cities successfully!" << std::endl;
+        std::cout << "\n🎉 Processed " << successCount << "/" << totalCities << " cities successfully!" << std::endl;
+        std::cout << "🛣️  Added " << distanceCount << " distances!" << std::endl;
         return successCount > 0;
         
     } catch (const std::exception& e) {
