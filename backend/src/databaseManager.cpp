@@ -31,8 +31,19 @@ bool DatabaseManager::connect() {
         return false;
     }
     
+    // Enable foreign key constraints (disabled by default in SQLite)
+    char* errMsg = nullptr;
+    rc = sqlite3_exec(db, "PRAGMA foreign_keys = ON;", nullptr, nullptr, &errMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Error enabling foreign keys: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+        sqlite3_close(db);
+        return false;
+    }
+    
     isConnected_ = true;
     std::cout << "Connected to SQLite database: " << dbPath << std::endl;
+    std::cout << "✅ Foreign key constraints enabled" << std::endl;
     return true;
 }
 

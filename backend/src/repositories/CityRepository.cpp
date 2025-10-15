@@ -63,7 +63,9 @@ City CityRepository::mapRowToEntity(const std::vector<std::string>& row) {
 // Insert new city into database
 bool CityRepository::insert(const City& city) {
     try {
-        std::string query = "INSERT INTO cities (name) VALUES ('" + city.getName() + "');";
+        // Insert with explicit ID so we can reuse deleted IDs deterministically
+        std::string query = "INSERT INTO cities (id, name) VALUES (" +
+                           std::to_string(city.getId()) + ", '" + city.getName() + "');";
         return database.executeUpdate(query);
     } catch (const std::exception& e) {
         std::cerr << "Error inserting city: " << e.what() << std::endl;

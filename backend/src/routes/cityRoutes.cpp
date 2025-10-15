@@ -134,4 +134,56 @@ void registerCityRoutes(crow::SimpleApp& app, CityService& cityService, FoodServ
             return crow::response(500, error);
         }
     });
+
+    // Might not need - was trying to figure out how to display city distances in custom trip frontend
+    // GET /api/cities/with-distances - Get cities with distances from previous city
+    CROW_ROUTE(app, "/api/cities/with-distances").methods("GET"_method)([&cityService, &cityDistanceRepo]() {
+        try {
+            // Fetch all cities
+            V<City> cities = cityService.getAllCities();
+            
+            // Create JSON response
+            crow::json::wvalue result;
+            result["cities"] = crow::json::wvalue::list();
+
+            for (size_t i = 0; i < cities.size(); i++) {
+                result["cities"][i]["id"] = cities[i].getId();
+                result["cities"][i]["name"] = cities[i].getName();
+                
+                // Calculate distance from previous city (if not first city)
+                if (i > 0) {
+                    int prevCityId = cities[i-1].getId();
+                    int currentCityId = cities[i].getId();
+                    
+                    // Find distance between previous city and current city
+                    V<CityDistance> allDistances = cityDistanceRepo.findAll();
+                    int distanceFromPrev = -1;
+                    
+                    for (const auto& dist : allDistances) {
+                        if ((dist.getFromCityId() == prevCityId && dist.getToCityId() == currentCityId) ||
+                            (dist.getFromCityId() == currentCityId && dist.getToCityId() == prevCityId)) {
+                            distanceFromPrev = dist.getDistance();
+                            break;
+                        }
+                    }
+                    
+                    result["cities"][i]["distance_from_previous"] = distanceFromPrev;
+                    result["cities"][i]["previous_city"] = cities[i-1].getName();
+                } else {
+                    result["cities"][i]["distance_from_previous"] = 0;
+                    result["cities"][i]["previous_city"] = "Starting point";
+                }
+            }
+
+            result["count"] = (int)cities.size();
+            result["message"] = "Cities with distances from previous city";
+
+            return crow::response(200, result);
+        } catch (const std::exception& e) {
+            crow::json::wvalue error;
+            error["error"] = "Failed to fetch cities with distances";
+            error["details"] = e.what();
+            return crow::response(500, error);
+        }
+    });
 }

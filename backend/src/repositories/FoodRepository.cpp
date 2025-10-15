@@ -102,7 +102,9 @@ Food FoodRepository::mapRowToEntity(const std::vector<std::string>& row) {
 // Insert new food into database
 bool FoodRepository::insert(const Food& food) {
     try {
-        std::string query = "INSERT INTO foods (name, city_id, price) VALUES ('" + 
+        // Insert with explicit ID so we can reuse deleted IDs deterministically
+        std::string query = "INSERT INTO foods (id, name, city_id, price) VALUES (" +
+                           std::to_string(food.getId()) + ", '" + 
                            food.getName() + "', " + 
                            std::to_string(food.getCityId()) + ", " + 
                            std::to_string(food.getPrice()) + ");";

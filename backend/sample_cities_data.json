@@ -1,0 +1,48 @@
+{
+  "cities": [
+    {
+      "name": "Stockholm",
+      "foods": [
+        { "name": "Raggmunk", "price": 6.75 },
+        { "name": "Gravad lax", "price": 13.76 },
+        { "name": "husmanskost", "price": 7.98 }
+      ],
+      "distances": [
+        { "to": "Amsterdam", "distance": 1435 },
+        { "to": "Berlin", "distance": 1084 },
+        { "to": "Brussels", "distance": 1564 },
+        { "to": "Budapest", "distance": 1951 },
+        { "to": "Hamburg", "distance": 1079 },
+        { "to": "Lisbon", "distance": 3610 },
+        { "to": "London", "distance": 1902 },
+        { "to": "Madrid", "distance": 3141 },
+        { "to": "Paris", "distance": 1885 },
+        { "to": "Prague", "distance": 1428 },
+        { "to": "Rome", "distance": 2546 },
+        { "to": "Vienna", "distance": 1758 }
+      ]
+    },
+    {
+      "name": "Vienna",
+      "foods": [
+        { "name": "Wiener Schnitzel", "price": 4.94 },
+        { "name": "Kaiserschmarrn", "price": 7.53 },
+        { "name": "Sachertorte", "price": 5.85 }
+      ],
+      "distances": [
+        { "to": "Amsterdam", "distance": 1147 },
+        { "to": "Berlin", "distance": 640 },
+        { "to": "Brussels", "distance": 1104 },
+        { "to": "Budapest", "distance": 243 },
+        { "to": "Hamburg", "distance": 930 },
+        { "to": "Lisbon", "distance": 2867 },
+        { "to": "London", "distance": 1461 },
+        { "to": "Madrid", "distance": 2401 },
+        { "to": "Paris", "distance": 1236 },
+        { "to": "Prague", "distance": 331 },
+        { "to": "Rome", "distance": 1120 },
+        { "to": "Stockholm", "distance": 1758 }
+      ]
+    }
+  ]
+}
