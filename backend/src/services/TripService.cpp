@@ -1,13 +1,14 @@
 #include "../../include/services/TripService.hpp"
 #include "../../include/services/tripCityService.hpp"
+#include "../../include/services/CityService.hpp"
 #include "../../include/entities/CityDistance.hpp"
 #include <iostream>
 #include <iomanip>
 #include <limits>
 
 
-TripService::TripService(TripRepository& tripRepository, CityDistanceRepository& cityDistanceRepo, TripCityService& tripCityService)
-    : tripRepo(tripRepository), cityDistanceRepo(cityDistanceRepo), tripCityService(tripCityService) {}
+TripService::TripService(TripRepository& tripRepository, CityDistanceRepository& cityDistanceRepo, TripCityService& tripCityService, CityService& cityService)
+    : tripRepo(tripRepository), cityDistanceRepo(cityDistanceRepo), tripCityService(tripCityService), cityService(cityService) {}
 
 int TripService::findNearestUnvisitedCity(Trip& trip, int fromCityId) {
     auto distances = cityDistanceRepo.findByFromCity(fromCityId);
@@ -98,8 +99,20 @@ void TripService::CreateShortestTrip(Trip& trip, int startCityId, const V<int>& 
     std::cout << "   Next city found: " << nextCityId << std::endl;
     
     if (nextCityId == -1) {
-        std::cout << " No more allowed cities to visit. Trip complete!" << std::endl;
-        std::cout << "   Final trip size: " << currentTripSize << std::endl;
+        std::cout << " No connected allowed cities found from current node." << std::endl;
+        // Fallback: append any remaining allowed cities so they appear in the summary
+        int appended = 0;
+        for (int cid : allowedCities) {
+            if (!hasCity(trip, cid)) {
+                addCityToTrip(trip, cid);
+                appended++;
+            }
+        }
+        if (appended > 0) {
+            std::cout << " ✅ Appended " << appended << " remaining selected cities without distance due to missing connections." << std::endl;
+        }
+        std::cout << "🏁 Trip complete!" << std::endl;
+        std::cout << "   Final trip size: " << getTripSize(trip) << std::endl;
         return;
     }
 
@@ -208,36 +221,19 @@ Trip TripService::planParisTour() {
     // Add Paris as the first city
     addCityToTrip(parisTrip, 9); // Paris is city ID 9
 
-    // Include all initial 11 cities (exclude Stockholm=12 and Vienna=13)
-    V<int> initialCities;
-    initialCities.push_back(1);  // Amsterdam
-    initialCities.push_back(2);  // Berlin
-    initialCities.push_back(3);  // Brussels
-    initialCities.push_back(4);  // Budapest
-    initialCities.push_back(5);  // Hamburg
-    initialCities.push_back(6);  // Lisbon
-    initialCities.push_back(7);  // London
-    initialCities.push_back(8);  // Madrid
-    initialCities.push_back(10); // Prague
-    initialCities.push_back(11); // Rome
-    // Note: Paris (9) is already added as the starting city
-    // Excluding: Stockholm (12) and Vienna (13)
-
-    // Show what cities we're trying to visit
-    std::cout << " DEBUG: Initial cities list: ";
-    for (size_t i = 0; i < initialCities.size(); i++) {
-        std::cout << initialCities[i];
-        if (i < initialCities.size() - 1) std::cout << ", ";
+    // Dynamically include ALL cities from the database except Paris itself
+    V<City> allCities = cityService.getAllCities();
+    V<int> allowed;
+    for (const auto& c : allCities) {
+        if (c.getId() != 9) allowed.push_back(c.getId());
     }
-    std::cout << std::endl;
 
-    std::cout << " Planning route to visit " << (initialCities.size() + 1) << " cities total (initial 11):" << std::endl;
+    std::cout << " Planning Paris route to visit " << (allowed.size() + 1) << " cities total:" << std::endl;
     std::cout << "   - Starting city: Paris (ID 9)" << std::endl;
-    std::cout << "   - Other cities to visit: " << initialCities.size() << std::endl;
-    std::cout << "   - Excluding: Stockholm (ID 12) and Vienna (ID 13)" << std::endl;
+    std::cout << "   - Other cities to visit: " << allowed.size() << std::endl;
 
-    // Use recursive algorithm to find optimal route among initial cities only
-    CreateShortestTrip(parisTrip, 9, initialCities);
+    // Use recursive algorithm across all DB cities
+    CreateShortestTrip(parisTrip, 9, allowed);
 
     std::cout << " Paris tour completed!" << std::endl;
     std::cout << "   Total distance: " << parisTrip.getTotalDistance() << " km" << std::endl;
@@ -264,18 +260,9 @@ Trip TripService::planLondonTour(int numCities) {
 
     //  Only visit the specified number of cities (excluding London)
     V<int> availableCities;
-    availableCities.push_back(1);  // Amsterdam
-    availableCities.push_back(2);  // Berlin
-    availableCities.push_back(3);  // Brussels
-    availableCities.push_back(4);  // Budapest
-    availableCities.push_back(5);  // Hamburg
-    availableCities.push_back(6);  // Lisbon
-    availableCities.push_back(8);  // Madrid
-    availableCities.push_back(9);  // Paris
-    availableCities.push_back(10); // Prague
-    availableCities.push_back(11); // Rome
-    availableCities.push_back(12); // Stockholm
-    availableCities.push_back(13); // Vienna
+    for (const auto& c : cityService.getAllCities()) {
+        if (c.getId() != 7) availableCities.push_back(c.getId());
+    }
     // Note: London (7) is already added as the starting city
 
     // ✅ NEW: Limit to the requested number of cities (excluding London)
@@ -317,18 +304,9 @@ Trip TripService::planBerlinTour() {
 
     // Berlin tour should visit ALL 13 European cities
     V<int> allEuropeanCities;
-    allEuropeanCities.push_back(1);  // Amsterdam
-    allEuropeanCities.push_back(3);  // Brussels
-    allEuropeanCities.push_back(4);  // Budapest
-    allEuropeanCities.push_back(5);  // Hamburg
-    allEuropeanCities.push_back(6);  // Lisbon
-    allEuropeanCities.push_back(7);  // London
-    allEuropeanCities.push_back(8);  // Madrid
-    allEuropeanCities.push_back(9);  // Paris
-    allEuropeanCities.push_back(10); // Prague
-    allEuropeanCities.push_back(11); // Rome
-    allEuropeanCities.push_back(12); // Stockholm
-    allEuropeanCities.push_back(13); // Vienna
+    for (const auto& c : cityService.getAllCities()) {
+        if (c.getId() != 2) allEuropeanCities.push_back(c.getId());
+    }
 
     std::cout << " Planning Berlin route to visit ALL " << (allEuropeanCities.size() + 1) << " European cities:" << std::endl;
     std::cout << "   - Starting city: Berlin (ID 2)" << std::endl;

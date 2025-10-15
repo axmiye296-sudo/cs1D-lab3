@@ -40,8 +40,8 @@ void startApiServer() {
     CityService cityService(cityRepo);
     FoodService foodService(foodRepo);
     TripCityService tripCityService(tripCityRepo);
-    TripService tripService(tripRepo, cityDistanceRepo, tripCityService);
-    AdminService adminService(cityRepo, foodRepo); 
+    TripService tripService(tripRepo, cityDistanceRepo, tripCityService, cityService);
+    AdminService adminService(cityRepo, foodRepo, cityDistanceRepo);
 
     // Register all routes
     registerCityRoutes(app, cityService, foodService, cityDistanceRepo);
@@ -69,6 +69,7 @@ void startApiServer() {
     std::cout << "  POST /api/admin/login          - Admin login" << std::endl;
     std::cout << "  POST /api/admin/logout         - Admin logout" << std::endl;
     std::cout << "  GET  /api/admin/info           - Admin info" << std::endl;
+    std::cout << "  POST /api/admin/upload-city    - Upload city data file" << std::endl;
 
     std::cout << "🌐 Server running on http://localhost:3001" << std::endl;
 

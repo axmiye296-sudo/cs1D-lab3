@@ -15,6 +15,7 @@ public:
     V<CityDistance> findByFromCity(int fromCityId);
     int getDistance(int fromCityId, int toCityId);
     V<CityDistance> findAll();
+    bool save(const CityDistance& cityDistance);
 
 private:
     CityDistance mapRowToEntity(const std::vector<std::string>& row);
