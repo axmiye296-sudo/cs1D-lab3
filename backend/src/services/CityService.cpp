@@ -1,20 +1,50 @@
+/**
+ * @file CityService.cpp
+ * @brief Implementation of CityService class for city-related operations
+ */
+
 #include "../../include/services/CityService.hpp"
 #include "../../include/repositories/CityRepository.hpp"
 #include "../../include/services/FoodService.hpp"
 #include <iostream>
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
 
+/**
+ * @brief Constructor implementation
+ * @param cityRepo Reference to CityRepository instance
+ * 
+ * Initializes the city service with a city repository.
+ * All city operations will be performed through this repository.
+ */
 CityService::CityService(CityRepository& cityRepo) : cityRepo(cityRepo) {
 }
 
-// Method to get all cities from the database
+// ============================================================================
+// PUBLIC METHODS
+// ============================================================================
+
+/**
+ * @brief Get all cities from the database
+ * @return Vector containing all City objects
+ * 
+ * Retrieves all cities from the database through the city repository.
+ * This method acts as a service layer wrapper around the repository.
+ */
 V<City> CityService::getAllCities() {
     V<City> cities = cityRepo.findAll();  // Call the CityRepository method to get all cities
                                           // This returns a V<City> container with all cities from the database
     return cities;                         // Return all the City objects we found
 }
 
-// Method to display all cities on screen
+/**
+ * @brief Display all cities in a formatted view
+ * 
+ * Shows all cities from the database in a nicely formatted display.
+ * Creates a header with decorative borders and lists all cities with their details.
+ */
 void CityService::displayAllCities() {
     std::cout << "\n" << std::string(50, '=') << std::endl;
     // \n = new line
@@ -48,6 +78,14 @@ void CityService::displayAllCities() {
 }
 
 
+/**
+ * @brief Display cities with their associated foods
+ * @param foodService Reference to FoodService for retrieving food data
+ * 
+ * Shows all cities along with their associated food recommendations.
+ * For each city, displays the city name and lists all available foods with prices.
+ * If no foods are available for a city, displays an appropriate message.
+ */
 void CityService::displayCitiesWithFood(FoodService& foodService) {
 
     // Get all cities from the database
@@ -74,7 +112,13 @@ void CityService::displayCitiesWithFood(FoodService& foodService) {
     }
 }
 
-
+/**
+ * @brief Display a single city
+ * @param city The City object to display
+ * 
+ * Shows the details of a single city in a simple format.
+ * Currently displays only the city name.
+ */
 void CityService::displayCity(const City& city) {
     std::cout << city.getName() << std::endl;
     // Example output: Name: Paris"

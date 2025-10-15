@@ -1,3 +1,8 @@
+/**
+ * @file tripRoutes.cpp
+ * @brief Implementation of trip-related API routes
+ */
+
 #include "crow/crow_all.h"
 #include "../../include/entities/Trip.hpp"
 #include "../../include/entities/City.hpp"
@@ -5,9 +10,34 @@
 #include "../../include/services/CityService.hpp"
 #include "../../include/services/tripCityService.hpp"
 
+/**
+ * @brief Register trip-related API routes
+ * @param app Reference to Crow SimpleApp instance
+ * @param tripService Reference to TripService for trip planning operations
+ * @param cityService Reference to CityService for city operations
+ * @param tripCityService Reference to TripCityService for trip-city relationships
+ * 
+ * Registers all trip-related API endpoints including:
+ * - GET /api/trips/paris - Plan and return Paris tour
+ * - GET /api/trips/custom - Plan custom trip from specific city
+ * - GET /api/trips/{id} - Get trip details by ID
+ * - GET /api/trips - Get all trips
+ * - POST /api/trips - Create new trip
+ * - DELETE /api/trips/{id} - Delete trip by ID
+ */
 void registerTripRoutes(crow::SimpleApp& app, TripService& tripService, CityService& cityService, TripCityService& tripCityService) {
     
-    // GET /api/trips/paris - Plan and return Paris tour
+    // ============================================================================
+    // TRIP PLANNING ROUTES
+    // ============================================================================
+
+    /**
+     * @brief GET /api/trips/paris - Plan and return Paris tour
+     * 
+     * Plans and returns a predefined Paris tour with optimized city visits.
+     * Response includes trip details, cities in the tour, and total distance.
+     * Response format: {"trip": {"id": 1, "type": "paris_tour", ...}, "cities": [...], "distance": 1000}
+     */
     CROW_ROUTE(app, "/api/trips/paris").methods("GET"_method)([&tripService, &cityService, &tripCityService]() {
         try {
             // Plan the Paris tour

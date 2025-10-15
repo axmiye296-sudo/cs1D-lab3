@@ -1,3 +1,8 @@
+/**
+ * @file cityRoutes.cpp
+ * @brief Implementation of city-related API routes
+ */
+
 #include "crow/crow_all.h"
 #include "../../include/entities/City.hpp"
 #include "../../include/entities/CityDistance.hpp"
@@ -5,8 +10,30 @@
 #include "../../include/services/FoodService.hpp"
 #include "../../include/repositories/CityDistanceRepository.hpp"
 
+/**
+ * @brief Register city-related API routes
+ * @param app Reference to Crow SimpleApp instance
+ * @param cityService Reference to CityService for city operations
+ * @param foodService Reference to FoodService for food operations
+ * @param cityDistanceRepo Reference to CityDistanceRepository for distance operations
+ * 
+ * Registers all city-related API endpoints including:
+ * - GET /api/cities - Retrieve all cities
+ * - GET /api/cities/distances - Retrieve all city distances
+ * - GET /api/cities/{id}/foods - Retrieve foods for a specific city
+ * - GET /api/cities/{id}/distances - Retrieve distances from a specific city
+ */
 void registerCityRoutes(crow::SimpleApp& app, CityService& cityService, FoodService& foodService, CityDistanceRepository& cityDistanceRepo) {
-    // GET /api/cities - Get all cities from database
+    // ============================================================================
+    // CITY ROUTES
+    // ============================================================================
+
+    /**
+     * @brief GET /api/cities - Retrieve all cities
+     * 
+     * Returns a JSON response containing all cities from the database.
+     * Response format: {"cities": [{"id": 1, "name": "Paris"}, ...], "count": 5}
+     */
     CROW_ROUTE(app, "/api/cities").methods("GET"_method)([&cityService]() {
         // Fetch cities directly from your existing database
         V<City> cities = cityService.getAllCities();
@@ -25,7 +52,12 @@ void registerCityRoutes(crow::SimpleApp& app, CityService& cityService, FoodServ
         return crow::response(200, result);
     });
 
-    // GET /api/cities/distances - Get all city distances
+    /**
+     * @brief GET /api/cities/distances - Retrieve all city distances
+     * 
+     * Returns a JSON response containing all city distance relationships.
+     * Response format: {"distances": [{"from_city_id": 1, "to_city_id": 2, "distance": 100}, ...], "count": 10}
+     */
     CROW_ROUTE(app, "/api/cities/distances").methods("GET"_method)([&cityDistanceRepo]() {
         try {
             std::cout << "🔍 API: Fetching all city distances..." << std::endl;

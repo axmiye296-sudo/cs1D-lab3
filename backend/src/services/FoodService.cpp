@@ -1,25 +1,63 @@
+/**
+ * @file FoodService.cpp
+ * @brief Implementation of FoodService class for food-related operations
+ */
+
 #include "../../include/services/FoodService.hpp"
 #include "../../include/repositories/FoodRepository.hpp"
 #include <iostream>
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+/**
+ * @brief Constructor implementation
+ * @param foodRepo Reference to FoodRepository instance
+ * 
+ * Initializes the food service with a food repository.
+ * All food operations will be performed through this repository.
+ */
 FoodService::FoodService(FoodRepository& foodRepo) : foodRepo(foodRepo) {
 }
 
-// Method to get all foods from the database
+// ============================================================================
+// PUBLIC METHODS
+// ============================================================================
+
+/**
+ * @brief Get all foods from the database
+ * @return Vector containing all Food objects
+ * 
+ * Retrieves all food items from the database through the food repository.
+ * This method acts as a service layer wrapper around the repository.
+ */
 V<Food> FoodService::getAllFoods() {
     V<Food> foods = foodRepo.findAll();  // Call the FoodRepository method to get all foods
                                          // This returns a V<Food> container with all foods from the database
     return foods;                        // Return all the Food objects we found
 }
 
-// Method to get foods for a specific city
+/**
+ * @brief Get foods for a specific city
+ * @param cityId The ID of the city to get foods for
+ * @return Vector containing Food objects for the specified city
+ * 
+ * Retrieves all food recommendations associated with a specific city.
+ * This method acts as a service layer wrapper around the repository.
+ */
 V<Food> FoodService::getFoodsByCityId(int cityId) {
     V<Food> foods = foodRepo.findByCityId(cityId);  // Call the FoodRepository method to get foods for a specific city
                                                     // This returns a V<Food> container with foods for the specified city
     return foods;  // Return all the Food objects we found for this city
 }
 
-// Method to display all foods on screen
+/**
+ * @brief Display all foods in a formatted view
+ * 
+ * Shows all food items from the database in a nicely formatted display.
+ * Creates a header with decorative borders and lists all foods with their details.
+ */
 void FoodService::displayAllFoods() {
     // Display header - create a nice looking title
     std::cout << "\n" << std::string(50, '=') << std::endl;
@@ -54,7 +92,13 @@ void FoodService::displayAllFoods() {
     // Print another line of equal signs
 }
 
-// Method to display foods for a specific city
+/**
+ * @brief Display foods for a specific city
+ * @param cityId The ID of the city to display foods for
+ * 
+ * Shows all food recommendations for a specific city in a formatted display.
+ * Creates a header with the city ID and lists all associated foods with their details.
+ */
 void FoodService::displayFoodsByCityId(int cityId) {
     // Display header - create a nice looking title
     std::cout << "\n" << std::string(50, '=') << std::endl;
@@ -89,14 +133,17 @@ void FoodService::displayFoodsByCityId(int cityId) {
     // Print another line of equal signs
 }
 
-// Helper method - displays one food
-//void FoodService::displayFood(const Food& food) {
-//    // Display food information
-//    std::cout << "ID: " << food.getId() << ", Name: " << food.getName()
-//              << ", City ID: " << food.getCityId() << ", Price: €" << food.getPrice() << std::endl;
-//    // Example output: "ID: 1, Name: Croissant, City ID: 1, Price: €2.5"
-//}
+// ============================================================================
+// HELPER METHODS
+// ============================================================================
 
+/**
+ * @brief Display a single food item
+ * @param food The Food object to display
+ * 
+ * Shows the details of a single food item in a simple format.
+ * Displays the food name and price.
+ */
 void FoodService::displayFood(const Food& food) {
     // Display food information
     std::cout << food.getName()

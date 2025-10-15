@@ -1,12 +1,38 @@
+/**
+ * @file CityRepository.cpp
+ * @brief Implementation of CityRepository class
+ */
+
 #include "../../include/repositories/CityRepository.hpp"
 #include "../../include/databaseManager.hpp"              // Include the full DatabaseManager class
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+/**
+ * @brief Constructor implementation
+ * @param db Reference to DatabaseManager instance
+ * 
+ * Initializes the repository with a database connection.
+ * The database reference is stored for later use in SQL operations.
+ */
 CityRepository::CityRepository(DatabaseManager& db) : database(db) {
     // The : database(db) part stores the database reference in our member variable
     // Now we can use 'database' to run SQL queries later
 }
 
-// Method to get all cities from the database
+// ============================================================================
+// PUBLIC METHODS
+// ============================================================================
+
+/**
+ * @brief Retrieve all cities from the database
+ * @return Vector containing all City objects from the database
+ * 
+ * Executes a SELECT query to fetch all cities and converts
+ * the results into City objects. Results are ordered alphabetically by name.
+ */
 V<City> CityRepository::findAll() {
     V<City> result;  // Create empty V container to hold our City objects
                      // This will store all the cities we get from the database
@@ -42,25 +68,18 @@ V<City> CityRepository::findAll() {
     return result;
 }
 
-// Helper method - converts a database row to a City object
-City CityRepository::mapRowToEntity(const std::vector<std::string>& row) {
-    City city;  // Create empty City object
-                // This will hold the data from the database row
+// ============================================================================
+// ADMIN METHODS
+// ============================================================================
 
-    // Convert string data to proper types
-    city.setId(std::stoi(row[0]));      // Convert "1" (string) to 1 (int)
-                                        // std::stoi = string to integer
-                                        // row[0] = first column (id)
-                                        // setId() stores the ID in our City object
-
-    city.setName(row[1]);               // "Paris" (string) stays "Paris" (string)
-                                        // row[1] = second column (name)
-                                        // setName() stores the name in our City object
-
-    return city;
-}
-
-// Insert new city into database
+/**
+ * @brief Insert a new city into the database
+ * @param city The City object to insert
+ * @return True if insertion successful, false otherwise
+ * 
+ * Adds a new city record to the database. The city ID should
+ * be set before calling this method.
+ */
 bool CityRepository::insert(const City& city) {
     try {
         // Insert with explicit ID so we can reuse deleted IDs deterministically
@@ -73,7 +92,13 @@ bool CityRepository::insert(const City& city) {
     }
 }
 
-// Update existing city in database
+/**
+ * @brief Update an existing city in the database
+ * @param city The City object with updated information
+ * @return True if update successful, false otherwise
+ * 
+ * Modifies an existing city record based on the city's ID.
+ */
 bool CityRepository::update(const City& city) {
     try {
         std::string query = "UPDATE cities SET name = '" + city.getName() + 
@@ -85,7 +110,13 @@ bool CityRepository::update(const City& city) {
     }
 }
 
-// Delete city from database
+/**
+ * @brief Delete a city from the database by ID
+ * @param cityId The ID of the city to delete
+ * @return True if deletion successful, false otherwise
+ * 
+ * Removes a city record from the database using its unique ID.
+ */
 bool CityRepository::deleteById(int cityId) {
     try {
         std::string query = "DELETE FROM cities WHERE id = " + std::to_string(cityId) + ";";
@@ -96,7 +127,15 @@ bool CityRepository::deleteById(int cityId) {
     }
 }
 
-// Find specific city by ID
+/**
+ * @brief Find a specific city by its ID
+ * @param cityId The ID of the city to find
+ * @return Pointer to City object if found, nullptr otherwise
+ * 
+ * Searches for a city with the specified ID and returns
+ * a pointer to the City object if found. Caller is responsible
+ * for deleting the returned pointer.
+ */
 City* CityRepository::findById(int cityId) {
     try {
         std::string query = "SELECT id, name FROM cities WHERE id = " + std::to_string(cityId) + ";";
@@ -112,4 +151,33 @@ City* CityRepository::findById(int cityId) {
         std::cerr << "Error finding city: " << e.what() << std::endl;
         return nullptr;
     }
+}
+
+// ============================================================================
+// PRIVATE HELPER METHODS
+// ============================================================================
+
+/**
+ * @brief Convert database row to City object
+ * @param row Vector of strings representing a database row
+ * @return City object created from the row data
+ * 
+ * Maps a database row (vector of strings) to a City object.
+ * This is a helper method used internally by other repository methods.
+ */
+City CityRepository::mapRowToEntity(const std::vector<std::string>& row) {
+    City city;  // Create empty City object
+                // This will hold the data from the database row
+
+    // Convert string data to proper types
+    city.setId(std::stoi(row[0]));      // Convert "1" (string) to 1 (int)
+                                        // std::stoi = string to integer
+                                        // row[0] = first column (id)
+                                        // setId() stores the ID in our City object
+
+    city.setName(row[1]);               // "Paris" (string) stays "Paris" (string)
+                                        // row[1] = second column (name)
+                                        // setName() stores the name in our City object
+
+    return city;
 }

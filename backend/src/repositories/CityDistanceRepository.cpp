@@ -1,9 +1,37 @@
+/**
+ * @file CityDistanceRepository.cpp
+ * @brief Implementation of CityDistanceRepository class
+ */
+
 #include "../../include/repositories/CityDistanceRepository.hpp"
 #include "../../include/databaseManager.hpp"
 #include <iostream>
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+/**
+ * @brief Constructor implementation
+ * @param db Reference to DatabaseManager instance
+ * 
+ * Initializes the repository with a database connection.
+ * The database reference is stored for later use in SQL operations.
+ */
 CityDistanceRepository::CityDistanceRepository(DatabaseManager& db) : database(db) {}
 
+// ============================================================================
+// PUBLIC METHODS
+// ============================================================================
+
+/**
+ * @brief Find distances from a specific city
+ * @param fromCityId The ID of the source city
+ * @return Vector containing CityDistance objects from the specified city
+ * 
+ * Retrieves all distance records where the specified city is the source.
+ * Results are ordered by distance (ascending) for optimal trip planning.
+ */
 V<CityDistance> CityDistanceRepository::findByFromCity(int fromCityId) {
     V<CityDistance> result;
     
@@ -24,6 +52,15 @@ V<CityDistance> CityDistanceRepository::findByFromCity(int fromCityId) {
     return result;
 }
 
+/**
+ * @brief Get distance between two specific cities
+ * @param fromCityId The ID of the source city
+ * @param toCityId The ID of the destination city
+ * @return The distance between the cities, or -1 if not found
+ * 
+ * Retrieves the distance between two specific cities.
+ * Returns -1 if no distance record exists between the cities.
+ */
 int CityDistanceRepository::getDistance(int fromCityId, int toCityId) {
     std::string query = "SELECT distance FROM city_distances WHERE from_city_id = " + 
                        std::to_string(fromCityId) + " AND to_city_id = " + std::to_string(toCityId) + ";";
@@ -40,6 +77,13 @@ int CityDistanceRepository::getDistance(int fromCityId, int toCityId) {
     return -1; // Distance not found
 }
 
+/**
+ * @brief Get all city distances from the database
+ * @return Vector containing all CityDistance objects
+ * 
+ * Retrieves all distance records from the database.
+ * Results are ordered by source city ID and distance for consistent ordering.
+ */
 V<CityDistance> CityDistanceRepository::findAll() {
     V<CityDistance> result;
     
@@ -56,14 +100,19 @@ V<CityDistance> CityDistanceRepository::findAll() {
     return result;
 }
 
-CityDistance CityDistanceRepository::mapRowToEntity(const std::vector<std::string>& row) {
-    int fromCityId = std::stoi(row[0]);
-    int toCityId = std::stoi(row[1]);
-    int distance = std::stoi(row[2]);
-    
-    return CityDistance(fromCityId, toCityId, distance);
-}
+// ============================================================================
+// ADMIN METHODS
+// ============================================================================
 
+/**
+ * @brief Save a city distance record
+ * @param cityDistance The CityDistance object to save
+ * @return True if save successful, false otherwise
+ * 
+ * Saves a new city distance record to the database.
+ * If a distance already exists between the same cities, it updates the existing record.
+ * Used for adding new distance relationships between cities.
+ */
 bool CityDistanceRepository::save(const CityDistance& cityDistance) {
     // Check if distance already exists
     int existingDistance = getDistance(cityDistance.getFromCityId(), cityDistance.getToCityId());
@@ -87,6 +136,26 @@ bool CityDistanceRepository::save(const CityDistance& cityDistance) {
         std::cout << "➕ Inserting new distance: " << insertQuery << std::endl;
         return database.executeInsert(insertQuery);
     }
+}
+
+// ============================================================================
+// PRIVATE HELPER METHODS
+// ============================================================================
+
+/**
+ * @brief Convert database row to CityDistance object
+ * @param row Vector of strings representing a database row
+ * @return CityDistance object created from the row data
+ * 
+ * Maps a database row (vector of strings) to a CityDistance object.
+ * This is a helper method used internally by other repository methods.
+ */
+CityDistance CityDistanceRepository::mapRowToEntity(const std::vector<std::string>& row) {
+    int fromCityId = std::stoi(row[0]);
+    int toCityId = std::stoi(row[1]);
+    int distance = std::stoi(row[2]);
+    
+    return CityDistance(fromCityId, toCityId, distance);
 }
 
 

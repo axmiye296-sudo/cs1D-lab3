@@ -1,3 +1,8 @@
+/**
+ * @file TripService.cpp
+ * @brief Implementation of TripService class for trip planning operations
+ */
+
 #include "../../include/services/TripService.hpp"
 #include "../../include/services/tripCityService.hpp"
 #include "../../include/services/CityService.hpp"
@@ -6,10 +11,37 @@
 #include <iomanip>
 #include <limits>
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
 
+/**
+ * @brief Constructor implementation
+ * @param tripRepository Reference to TripRepository instance
+ * @param cityDistanceRepo Reference to CityDistanceRepository instance
+ * @param tripCityService Reference to TripCityService instance
+ * @param cityService Reference to CityService instance
+ * 
+ * Initializes the trip service with required repositories and services.
+ * All trip planning operations will be performed through these dependencies.
+ */
 TripService::TripService(TripRepository& tripRepository, CityDistanceRepository& cityDistanceRepo, TripCityService& tripCityService, CityService& cityService)
     : tripRepo(tripRepository), cityDistanceRepo(cityDistanceRepo), tripCityService(tripCityService), cityService(cityService) {}
 
+// ============================================================================
+// HELPER METHODS
+// ============================================================================
+
+/**
+ * @brief Find the nearest unvisited city from a given city
+ * @param trip Reference to the Trip object
+ * @param fromCityId The ID of the city to search from
+ * @return The ID of the nearest unvisited city, or -1 if none found
+ * 
+ * Searches for the closest city that hasn't been visited yet in the trip.
+ * Excludes the starting city to prevent returning to the origin.
+ * Uses distance data from the city distance repository.
+ */
 int TripService::findNearestUnvisitedCity(Trip& trip, int fromCityId) {
     auto distances = cityDistanceRepo.findByFromCity(fromCityId);
     int nearestCityId = -1;

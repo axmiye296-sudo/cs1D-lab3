@@ -1,7 +1,8 @@
 /**
- * This file contains admin service methods for managing cities and foods
- * Changes will be saved to database so if testing please make sure to delete
+ * @file AdminService.cpp
+ * @brief Implementation of AdminService class for administrative operations
  */
+
 #include "../../include/services/AdminService.hpp"
 #include "crow/crow_all.h"
 #include <iostream>
@@ -9,29 +10,70 @@
 #include <string>
 #include <set>
 
-// Constructor
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+/**
+ * @brief Constructor implementation
+ * @param cityRepo Reference to CityRepository instance
+ * @param foodRepo Reference to FoodRepository instance
+ * @param cityDistanceRepo Reference to CityDistanceRepository instance
+ * 
+ * Initializes the admin service with required repositories and creates
+ * a default admin account for testing purposes.
+ */
 AdminService::AdminService(CityRepository& cityRepo, FoodRepository& foodRepo, CityDistanceRepository& cityDistanceRepo) 
     : cityRepo(cityRepo), foodRepo(foodRepo), cityDistanceRepo(cityDistanceRepo) {
     // Create a default admin for testing (username: admin, password: password)
     currentAdmin = Admin("admin", "password");
 }
 
-// Admin login
+// ============================================================================
+// ADMIN AUTHENTICATION METHODS
+// ============================================================================
+
+/**
+ * @brief Authenticate admin user
+ * @param username The admin username
+ * @param password The admin password
+ * @return True if authentication successful, false otherwise
+ * 
+ * Attempts to log in an admin user with the provided credentials.
+ * Delegates to the Admin entity's login method.
+ */
 bool AdminService::loginAdmin(const std::string& username, const std::string& password) {
     return currentAdmin.login(username, password);
 }
 
-// Admin logout
+/**
+ * @brief Log out the current admin
+ * 
+ * Logs out the currently authenticated admin user.
+ * Delegates to the Admin entity's logout method.
+ */
 void AdminService::logoutAdmin() {
     currentAdmin.logout();
 }
 
-// Check if admin is logged in
+/**
+ * @brief Check if admin is currently logged in
+ * @return True if admin is logged in, false otherwise
+ * 
+ * Verifies the current authentication status.
+ * Delegates to the Admin entity's getIsLoggedIn method.
+ */
 bool AdminService::isAdminLoggedIn() const {
     return currentAdmin.getIsLoggedIn();
 }
 
-// Check admin permission before allowing operations
+/**
+ * @brief Check if admin has permission to perform operations
+ * @return True if admin is logged in and has permission, false otherwise
+ * 
+ * Verifies that an admin is currently logged in before allowing
+ * administrative operations. Displays access denied message if not logged in.
+ */
 bool AdminService::checkAdminPermission() const {
     if (!isAdminLoggedIn()) {
         std::cout << "Access denied! Please login as admin first." << std::endl;

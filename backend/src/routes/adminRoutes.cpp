@@ -1,8 +1,21 @@
+/**
+ * @file adminRoutes.cpp
+ * @brief Implementation of admin-related API routes
+ */
+
 #include "crow/crow_all.h"
 #include "../../include/entities/Admin.hpp"
 #include "../../include/services/AdminService.hpp"
 #include "../../include/routes/adminRoutes.hpp"
 
+/**
+ * @brief Macro for admin authentication check
+ * @param adminService Reference to AdminService instance
+ * @param res Reference to Crow response object
+ * 
+ * Checks if an admin is currently logged in. If not, returns a 403 Unauthorized response.
+ * This macro is used throughout admin routes to ensure proper authentication.
+ */
 #define ADMIN_AUTH_CHECK(adminService, res) \
     if (!adminService.isAdminLoggedIn()) { \
         crow::json::wvalue error; \
@@ -13,9 +26,31 @@
         return; \
     }
 
+/**
+ * @brief Register admin-related API routes
+ * @param app Reference to Crow SimpleApp instance
+ * @param adminService Reference to AdminService for administrative operations
+ * 
+ * Registers all admin-related API endpoints including:
+ * - POST /api/admin/login - Admin authentication
+ * - POST /api/admin/logout - Admin logout
+ * - City management endpoints (add, update, delete, list)
+ * - Food management endpoints (add, update, delete, list)
+ * - File processing endpoints for data import
+ */
 void registerAdminRoutes(crow::SimpleApp& app, AdminService& adminService) {
 
-    // POST /api/admin/login
+    // ============================================================================
+    // AUTHENTICATION ROUTES
+    // ============================================================================
+
+    /**
+     * @brief POST /api/admin/login - Admin authentication
+     * 
+     * Authenticates an admin user with username and password.
+     * Request body: {"username": "admin", "password": "password"}
+     * Response: {"success": true/false, "message": "Login successful" or "Invalid credentials"}
+     */
     CROW_ROUTE(app, "/api/admin/login").methods("POST"_method)
     ([&adminService](const crow::request& req, crow::response& res) {
         auto body = crow::json::load(req.body);
@@ -37,7 +72,13 @@ void registerAdminRoutes(crow::SimpleApp& app, AdminService& adminService) {
         res.end();
     });
 
-    // POST /api/admin/logout
+    /**
+     * @brief POST /api/admin/logout - Admin logout
+     * 
+     * Logs out the currently authenticated admin user.
+     * Requires admin authentication.
+     * Response: {"message": "Admin logged out successfully"}
+     */
     CROW_ROUTE(app, "/api/admin/logout").methods("POST"_method)
     ([&adminService](const crow::request& req, crow::response& res) {
         ADMIN_AUTH_CHECK(adminService, res);

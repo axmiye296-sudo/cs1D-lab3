@@ -1,13 +1,39 @@
+/**
+ * @file TripRepository.cpp
+ * @brief Implementation of TripRepository class
+ */
+
 #include "../../include/repositories/TripRepository.hpp"
 #include "../../include/databaseManager.hpp"
 
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+/**
+ * @brief Constructor implementation
+ * @param db Reference to DatabaseManager instance
+ * 
+ * Initializes the repository with a database connection.
+ * The database reference is stored for later use in SQL operations.
+ */
 TripRepository::TripRepository(DatabaseManager& db) : database(db) {
     // The : database(db) part stores the database reference in our member variable
     // Now we can use 'database' to run SQL queries later
 }
 
-// This function will return a vector of trip objects
-// that match the trip type (starting city)
+// ============================================================================
+// PUBLIC METHODS
+// ============================================================================
+
+/**
+ * @brief Find trips by trip type
+ * @param tripType The type of trip to search for
+ * @return Vector containing Trip objects matching the trip type
+ * 
+ * Retrieves all trips that match the specified trip type.
+ * This is useful for finding predefined tour types like "paris_tour".
+ */
 V<Trip> TripRepository::findByType(const std::string& tripType) {
     //Creating a trip container/vector to hold trip objects
     V<Trip> result;
@@ -31,7 +57,14 @@ V<Trip> TripRepository::findByType(const std::string& tripType) {
     return result;
 }
 
-// This function is for custom start city
+/**
+ * @brief Find trips by starting city
+ * @param startCityId The ID of the starting city
+ * @return Vector containing Trip objects with the specified starting city
+ * 
+ * Retrieves all trips that start from the specified city.
+ * This is useful for custom trip planning.
+ */
 V<Trip> TripRepository::findByStartCity(int startCityId) {
     V<Trip> result;
 
