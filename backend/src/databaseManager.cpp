@@ -148,8 +148,8 @@ bool DatabaseManager::executeQuery(const std::string& query) {
  * Each inner vector represents a row, and each string represents a column value.
  * Uses prepared statements for safe query execution.
  */
-V<std::vector<std::string>> DatabaseManager::executeSelect(const std::string& query) {
-    V<std::vector<std::string>> results;
+std::vector<std::vector<std::string>> DatabaseManager::executeSelect(const std::string& query) {
+    std::vector<std::vector<std::string>> results;
     
     if (!isConnected()) {
         std::cerr << "Database not connected" << std::endl;
